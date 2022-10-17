@@ -1,10 +1,36 @@
+# DATABASE
 spring:
   profiles:
-    active: dev
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    active: ${activeProfile:dev}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 
-custom:
-  jwt:
-    secretKey: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
+  output:
+    ansi:
+      enabled: always
+
+  thymeleaf:
+    prefix: "classpath:/templates/"
+    cache: false
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
 

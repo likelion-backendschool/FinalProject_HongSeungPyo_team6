@@ -21,7 +21,7 @@ public class MemberContext extends User {
     private final String email;
     private final Set<GrantedAuthority> authorities;
     public MemberContext(Member member) {
-        super(member.getUsername(), "", member.getAuthorities());
+        super(member.getUsername(), member.getPassword(), member.getAuthorities());
         id = member.getId();
         createDate = member.getCreateDate();
         modifyDate = member.getModifyDate();

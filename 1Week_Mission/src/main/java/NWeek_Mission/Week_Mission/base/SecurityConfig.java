@@ -1,8 +1,6 @@
 package NWeek_Mission.Week_Mission.base;
 
-
-
-import NWeek_Mission.Week_Mission.member.service.MemberSecurityService;
+import NWeek_Mission.Week_Mission.member.service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+// 시큐리티 설정
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    private final MemberSecurityService memberSecurityService;
+    private final UserSecurityService userSecurityService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,11 +29,11 @@ public class SecurityConfig {
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/user/login")
+                .loginPage("/member/login")
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
 
