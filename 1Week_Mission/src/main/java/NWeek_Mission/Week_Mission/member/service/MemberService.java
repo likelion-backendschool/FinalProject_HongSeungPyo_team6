@@ -3,8 +3,11 @@ package NWeek_Mission.Week_Mission.member.service;
 
 
 import NWeek_Mission.Week_Mission.member.entity.Member;
+import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
+import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +30,18 @@ public class MemberService {
                 .email(email)
                 .build();
 
-        memberRepository.save(member);
+        try {
+            memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+            if (memberRepository.existsByUsername(username)) {
+                throw new SignupUsernameDuplicatedException("이미 사용중인 username 입니다.");
+            } else {
+                throw new SignupEmailDuplicatedException("이미 사용중인 email 입니다.");
+            }
+        }
+
 
         return member;
     }
+
 }
