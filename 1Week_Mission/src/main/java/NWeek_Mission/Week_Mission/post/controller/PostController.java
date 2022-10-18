@@ -67,7 +67,7 @@ public class PostController {
         try {
             postService.write(member,postCrateForm.getSubject(),
                     postCrateForm.getContent(),
-                    postCrateForm.getPostKeywordContents());
+                    postCrateForm.getKeywords());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "/post/write";

@@ -14,5 +14,5 @@ public class PostCrateForm {
     private String content;
 
     @NotEmpty
-    private String postKeywordContents;
+    private String keywords;
 }
