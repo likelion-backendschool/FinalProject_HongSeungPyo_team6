@@ -14,18 +14,7 @@
             <span>수정 할 닉네임</span>
             <input type="text" name="nickname" th:value="${#authentication.principal.getNickname()}"/>
         </div>
-        <div class="mb-2">
-            <span>현재 비밀번호</span>
-            <input th:type="password" th:name="currentPassword"/>
-        </div>
-        <div class="mb-2">
-            <span>새 비밀번호</span>
-            <input th:type="password" th:name="password"/>
-        </div>
-        <div class="mb-2">
-            <span>새 비밀번호확인</span>
-            <input th:type="password" th:name="passwordCheck"/>
-        </div>
+
         <div class="mb-2">
             <span>이메일</span>
             <input th:type="email" th:name="email" th:value="${#authentication.principal.getEmail()}"/>
