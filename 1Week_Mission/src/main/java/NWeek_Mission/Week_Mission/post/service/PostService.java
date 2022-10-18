@@ -24,4 +24,8 @@ public class PostService {
                     .build();
         postRepository.save(post);
     }
+
+    public List<Post> findAllNewPost() {
+        return postRepository.findTop100ByOrderByIdAsc();
+    }
 }

@@ -5,6 +5,9 @@
 
 <div layout:fragment="content" class="container my-3">
 
+    <div th:each="post : ${postList}">
+        <div th:text="${post.subject}"></div>
+    </div>
     <div>메인</div>
 
 </div>
