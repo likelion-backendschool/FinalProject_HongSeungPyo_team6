@@ -20,11 +20,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void write(Member member, String subject, String content, String contentHtml,String keywordContentsStr) {
+    public void write(Member member, String subject, String content,String keywordContentsStr) {
         Post post = Post.builder()
                     .subject(subject)
                     .content(content)
-                    .contentHtml(contentHtml)
+                    .contentHtml(content)
                     .author(member)
                     .build();
 
