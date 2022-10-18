@@ -14,8 +14,5 @@ public class PostCrateForm {
     private String content;
 
     @NotEmpty
-    private String contentHtml;
-
-    @NotEmpty
-    private String hashTagsStr;
+    private String postKeywordContents;
 }

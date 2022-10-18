@@ -11,7 +11,6 @@ import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.service.PostService;
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
 import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
-import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,7 +51,7 @@ public class PostController {
         return "/post/detail";
     }
     @GetMapping("/write")
-    public String showWrite(){
+    public String showWrite(PostCrateForm postCrateForm){
         return "/post/write";
     }
     @PostMapping("/write")
@@ -68,15 +67,14 @@ public class PostController {
         try {
             postService.write(member,postCrateForm.getSubject(),
                     postCrateForm.getContent(),
-                    postCrateForm.getContentHtml(),
-                    postCrateForm.getHashTagsStr());
+                    postCrateForm.getPostKeywordContents());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
-            return "/member/join";
+            return "/post/write";
         } catch (SignupUsernameDuplicatedException e) {
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
-            return "/member/join";
+            return "/post/write";
         }
-        return "/post/write";
+        return "redirect:/post/list";
     }
 }
