@@ -5,8 +5,10 @@ import NWeek_Mission.Week_Mission.post.service.PostService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("dev")
 public class DevInitData implements InitDataBefore{
     @Bean
     CommandLineRunner initData(

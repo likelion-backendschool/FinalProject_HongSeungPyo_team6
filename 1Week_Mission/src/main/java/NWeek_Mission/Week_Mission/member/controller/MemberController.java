@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import javax.validation.Valid;
 
@@ -20,13 +20,13 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
     @GetMapping("/login")
-    @ResponseBody
     public String login(){
-        return "로그인";
+        return "/member/login";
     }
 
+
     @GetMapping("/join")
-    public String showJoin(){
+    public String showJoin(MemberCreateForm memberCreateForm){
         return "/member/join";
     }
 
