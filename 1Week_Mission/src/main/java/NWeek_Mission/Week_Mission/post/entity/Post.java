@@ -3,11 +3,14 @@ package NWeek_Mission.Week_Mission.post.entity;
 
 import NWeek_Mission.Week_Mission.base.entity.BaseEntity;
 import NWeek_Mission.Week_Mission.member.entity.Member;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@SuperBuilder
 @NoArgsConstructor
 public class Post extends BaseEntity {
     private String subject;
