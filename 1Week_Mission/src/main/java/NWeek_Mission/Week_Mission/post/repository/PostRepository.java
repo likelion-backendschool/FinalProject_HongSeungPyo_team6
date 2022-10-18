@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-    List<Post> findTop100ByOrderByIdAsc();
+    List<Post> findTop100ByOrderByCreateDateDesc();
 }

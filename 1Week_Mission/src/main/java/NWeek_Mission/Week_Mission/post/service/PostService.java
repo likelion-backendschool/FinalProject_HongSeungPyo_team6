@@ -21,11 +21,12 @@ public class PostService {
                     .subject(subject)
                     .content(content)
                     .contentHtml(contentHtml)
+                    .author(member)
                     .build();
         postRepository.save(post);
     }
 
     public List<Post> findAllNewPost() {
-        return postRepository.findTop100ByOrderByIdAsc();
+        return postRepository.findTop100ByOrderByCreateDateDesc();
     }
 }
