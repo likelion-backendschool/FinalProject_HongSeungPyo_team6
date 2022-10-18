@@ -2,13 +2,12 @@ package NWeek_Mission.Week_Mission;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class HomeController {
+public class MainController {
     @RequestMapping("/")
-    @ResponseBody
-    public String main(){
-        return "안녕";
+    public String list(){
+
+        return "/main";
     }
 }
