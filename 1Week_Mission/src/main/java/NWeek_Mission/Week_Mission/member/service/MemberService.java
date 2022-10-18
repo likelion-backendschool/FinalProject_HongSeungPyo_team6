@@ -44,9 +44,8 @@ public class MemberService {
 
         return member;
     }
-    public Member modify(Member member, String nickname, String password, String email) {
+    public Member modify(Member member, String nickname, String email) {
 
-        member.setPassword(passwordEncoder.encode(password));
         member.setNickname(nickname);
         member.setEmail(email);
 
@@ -62,5 +61,10 @@ public class MemberService {
 
 
         return member;
+    }
+
+    public void modifyPassword(Member member, String password) {
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
     }
 }
