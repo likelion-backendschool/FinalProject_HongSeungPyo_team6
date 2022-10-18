@@ -1,11 +1,16 @@
 package NWeek_Mission.Week_Mission.post.controller;
 
+import NWeek_Mission.Week_Mission.member.dto.MemberContext;
+import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
+import NWeek_Mission.Week_Mission.member.service.MemberService;
 import NWeek_Mission.Week_Mission.post.dto.PostCrateForm;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final MemberService memberService;
     @GetMapping("/list")
     public String list(Model model){
         List<Post> postList = postService.findAllPost();
@@ -32,14 +38,18 @@ public class PostController {
         return "/post/write";
     }
     @PostMapping("/write")
-    public String write(@Valid PostCrateForm postCrateForm, BindingResult bindingResult){
+    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid PostCrateForm postCrateForm, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "/post/write";
         }
 
+        Member member = memberService.findByUsername(memberContext.getUsername()).orElseThrow(() ->
+                new UsernameNotFoundException("사용자를 찾을수 없습니다.")
+        );
+
         try {
-            postService.write(postCrateForm.getSubject(),
-                    postCrateForm.getContent());
+            postService.write(member,postCrateForm.getSubject(),
+                    postCrateForm.getContent(),postCrateForm.getContentHtml());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "/member/join";

@@ -12,4 +12,7 @@ public class PostCrateForm {
     private String subject;
     @NotEmpty
     private String content;
+
+    @NotEmpty
+    private String contentHtml;
 }
