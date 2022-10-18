@@ -8,11 +8,7 @@ import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedExceptio
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -48,7 +44,7 @@ public class MemberController {
             return "/member/join";
         }
 
-        if (!memberCreateForm.getPassword().equals(memberCreateForm.getPasswordCheck())) {
+        if (!memberCreateForm.getPassword().equals(memberCreateForm.getPasswordConfirm())) {
             bindingResult.rejectValue("password2", "passwordIncorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return "/member/join";
