@@ -14,4 +14,12 @@ public class PostService {
     public List<Post> findAllPost() {
         return postRepository.findAll();
     }
+
+    public void write(String subject, String content) {
+        Post post = Post.builder()
+                    .subject(subject)
+                    .content(content)
+                    .build();
+        postRepository.save(post);
+    }
 }

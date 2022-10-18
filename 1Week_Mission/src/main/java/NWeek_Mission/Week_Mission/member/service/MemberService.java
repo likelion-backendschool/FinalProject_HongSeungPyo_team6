@@ -23,11 +23,12 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Member join(String username, String password, String email) {
+    public Member join(String username, String password, String email, String nickname) {
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .email(email)
+                .nickname(nickname)
                 .build();
 
         try {
