@@ -7,7 +7,11 @@ import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedExcep
 import NWeek_Mission.Week_Mission.member.service.MemberService;
 import NWeek_Mission.Week_Mission.post.dto.PostCrateForm;
 import NWeek_Mission.Week_Mission.post.entity.Post;
+import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.service.PostService;
+import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
+import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
+import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,11 +32,24 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final MemberService memberService;
+
+    private final PostHashTagService postHashTagService;
     @GetMapping("/list")
-    public String list(Model model){
+    public String showList(Model model){
         List<Post> postList = postService.findAllPost();
         model.addAttribute("postList",postList);
         return "/post/list";
+    }
+
+    @GetMapping("/{id}")
+    public String showDetail(Model model, @PathVariable Long id){
+        Post post = postService.findByIdPost(id).orElseThrow(() ->
+                new PostNotFoundException("해당 글을 찾을수 없습니다.")
+        );
+        List<PostHashTag> postHashTagList = postHashTagService.getHashTags(post.getId());
+        model.addAttribute("postHashTagList",postHashTagList);
+        model.addAttribute("post",post);
+        return "/post/detail";
     }
     @GetMapping("/write")
     public String showWrite(){
@@ -49,7 +67,9 @@ public class PostController {
 
         try {
             postService.write(member,postCrateForm.getSubject(),
-                    postCrateForm.getContent(),postCrateForm.getContentHtml());
+                    postCrateForm.getContent(),
+                    postCrateForm.getContentHtml(),
+                    postCrateForm.getHashTagsStr());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "/member/join";

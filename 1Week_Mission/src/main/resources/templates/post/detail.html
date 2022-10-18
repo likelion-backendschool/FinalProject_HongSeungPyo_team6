@@ -1,0 +1,49 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <h1 class="border-bottom py-2" th:text="${post.id}"></h1>
+    <h2 class="border-bottom py-2" th:text="${post.subject}"></h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" th:text="${post.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div th:if="${post.createDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">
+                        <span th:text="${post.author?.username}"></span>
+                    </div>
+                    <div class="mb-2" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <span th:text="${#temporals.format(post.createDate, 'HH')}"></span>
+                </div>
+            </div>
+            <div>
+                <a href="javascript:;" th:each="postHashTag : ${postHashTagList}">
+                    <span th:text="@{|#${postHashTag.getPostKeyword().content}|}"></span>
+                </a>
+            </div>
+            <div class="my-3">
+                <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+                   th:text="수정"></a>
+
+                <a onclick="if ( !confirm('정말로 삭제하시겠습니까?') ) return false;"
+                   th:href="@{|/post/${post.id}/delete|}"
+                   class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+                   th:text="삭제"></a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</html>
