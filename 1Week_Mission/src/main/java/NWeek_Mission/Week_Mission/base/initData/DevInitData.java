@@ -17,7 +17,7 @@ public class DevInitData implements InitDataBefore{
             MemberService memberService,
             PostService postService) {
         return args -> {
-            before(memberService, postService);
+                before(memberService, postService);
         };
     }
 }
