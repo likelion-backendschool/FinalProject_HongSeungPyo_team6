@@ -18,6 +18,7 @@ public class MemberContext extends User {
     private final LocalDateTime createDate;
     private final LocalDateTime modifyDate;
     private final String username;
+    private final String nickname;
     private final String email;
     private final Set<GrantedAuthority> authorities;
     public MemberContext(Member member) {
@@ -26,6 +27,7 @@ public class MemberContext extends User {
         createDate = member.getCreateDate();
         modifyDate = member.getModifyDate();
         username = member.getUsername();
+        nickname = member.getNickname();
         email = member.getEmail();
         authorities = member.getAuthorities().stream().collect(Collectors.toSet());
     }

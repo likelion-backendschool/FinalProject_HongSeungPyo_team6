@@ -5,7 +5,7 @@
 
 <div layout:fragment="content" class="container my-3">
 
-    <a th:href="@{/post/write}"></a>
+    <a th:href="@{/post/write}">글 작성</a>
     <table class="table text-center">
         <colgroup>
             <col>
@@ -24,7 +24,7 @@
             <tr th:each="post : ${postList}">
                 <td th:text="${post.id}"></td>
                 <td class="text-start">
-                    <a th:href="@{|/article/detail/${post.id}|}" th:text="${post.subject}"></a>
+                    <a th:href="@{|/post/${post.id}|}" th:text="${post.subject}"></a>
                 </td>
                 <td>
                     <span th:text="${post.author.nickname}"></span>
