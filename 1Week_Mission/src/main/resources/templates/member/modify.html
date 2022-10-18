@@ -1,0 +1,37 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <form method="post" th:action="@{/member/modify}" th:object="${memberModifyForm}">
+        <div th:replace="form_errors :: formErrorsFragment"></div>
+        <div class="mb-2" hidden>
+            <span th:text="아이디"></span>
+            <input type="text" name="username" th:value="${#authentication.principal.getUsername()}" />
+        </div>
+        <div class="mb-2">
+            <span>수정 할 닉네임</span>
+            <input type="text" name="nickname" th:value="${#authentication.principal.getNickname()}"/>
+        </div>
+        <div class="mb-2">
+            <span>현재 비밀번호</span>
+            <input th:type="password" th:name="currentPassword"/>
+        </div>
+        <div class="mb-2">
+            <span>새 비밀번호</span>
+            <input th:type="password" th:name="password"/>
+        </div>
+        <div class="mb-2">
+            <span>새 비밀번호확인</span>
+            <input th:type="password" th:name="passwordCheck"/>
+        </div>
+        <div class="mb-2">
+            <span>이메일</span>
+            <input th:type="email" th:name="email" th:value="${#authentication.principal.getEmail()}"/>
+        </div>
+        <button type="submit">수정하기</button>
+    </form>
+</div>
+
+</html>

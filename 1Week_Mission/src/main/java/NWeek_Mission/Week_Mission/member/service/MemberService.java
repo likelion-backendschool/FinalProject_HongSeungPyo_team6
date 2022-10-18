@@ -44,5 +44,23 @@ public class MemberService {
 
         return member;
     }
+    public Member modify(Member member, String nickname, String password, String email) {
 
+        member.setPassword(passwordEncoder.encode(password));
+        member.setNickname(nickname);
+        member.setEmail(email);
+
+        try {
+            memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+            if (memberRepository.existsByNickname(nickname)) {
+                throw new SignupUsernameDuplicatedException("이미 사용중인 nickname 입니다.");
+            } else {
+                throw new SignupEmailDuplicatedException("이미 사용중인 email 입니다.");
+            }
+        }
+
+
+        return member;
+    }
 }
