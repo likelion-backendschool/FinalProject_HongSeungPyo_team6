@@ -2,11 +2,11 @@ package NWeek_Mission.Week_Mission.post.service;
 
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
+import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.repository.PostRepository;
 import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +51,10 @@ public class PostService {
 
 
     
-    public void deletePost(Post post) {
+    public void deletePost(Long id) {
+        Post post = findByIdPost(id).orElseThrow(() ->
+                new PostNotFoundException("해당 글을 찾을수 없습니다.")
+        );
         postRepository.delete(post);
     }
 }

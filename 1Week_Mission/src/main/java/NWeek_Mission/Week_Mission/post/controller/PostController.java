@@ -94,10 +94,8 @@ public class PostController {
     }
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
-        Post post = postService.findByIdPost(id).orElseThrow(() ->
-                new PostNotFoundException("해당 글을 찾을수 없습니다.")
-        );
-        postService.deletePost(post);
+        postService.deletePost(id);
+
         return "redirect:/post/list";
     }
 }
