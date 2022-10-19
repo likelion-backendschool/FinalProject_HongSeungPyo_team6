@@ -3,7 +3,7 @@ package NWeek_Mission.Week_Mission.posthashtag.entity;
 import NWeek_Mission.Week_Mission.base.entity.BaseEntity;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
-import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
+import NWeek_Mission.Week_Mission.postkeyword.entity.PostKeyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

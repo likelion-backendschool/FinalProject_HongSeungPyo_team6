@@ -1,10 +1,11 @@
 package NWeek_Mission.Week_Mission.post.service;
 
+import NWeek_Mission.Week_Mission.member.dto.MemberContext;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.repository.PostRepository;
-import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
+import NWeek_Mission.Week_Mission.posthashtag.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,4 +59,10 @@ public class PostService {
         );
         postRepository.delete(post);
     }
+
+    public List<Post> search(String kw, MemberContext memberContext){
+        List<Post> postList = postRepository.searchQsl(kw,memberContext);
+        return postList;
+    }
+
 }

@@ -10,7 +10,7 @@ import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.service.PostService;
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
-import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
+import NWeek_Mission.Week_Mission.posthashtag.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,10 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,8 +33,8 @@ public class PostController {
 
     private final PostHashTagService postHashTagService;
     @GetMapping("/list")
-    public String showList(Model model){
-        List<Post> postList = postService.findAllPost();
+    public String showList(Model model, @RequestParam(defaultValue = "") String kw, @AuthenticationPrincipal MemberContext memberContext){
+        List<Post> postList = postService.search(kw,memberContext);
         model.addAttribute("postList",postList);
         return "/post/list";
     }
@@ -98,13 +95,6 @@ public class PostController {
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
         postService.deletePost(id);
-
-        return "redirect:/post/list";
-    }
-    @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id){
-        postService.deletePost(id);
-
         return "redirect:/post/list";
     }
 }

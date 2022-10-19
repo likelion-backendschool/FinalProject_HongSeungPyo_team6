@@ -24,9 +24,9 @@
                 </div>
             </div>
             <div>
-                <a href="javascript:;" th:each="postHashTag : ${postHashTagList}">
-                    <span th:text="@{|#${postHashTag.getPostKeyword().content}|}"></span>
-                </a>
+                <span th:each="postHashTag : ${postHashTagList}">
+                    <a th:href="@{|/post/list?kw=${postHashTag.getPostKeyword().content}|}" th:text="@{|#${postHashTag.getPostKeyword().content}|}"></a>
+                </span>
             </div>
             <div class="my-3">
                 <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-outline-secondary"

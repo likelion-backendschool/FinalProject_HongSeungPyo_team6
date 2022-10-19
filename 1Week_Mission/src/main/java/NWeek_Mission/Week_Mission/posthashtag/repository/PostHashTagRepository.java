@@ -1,4 +1,4 @@
-package NWeek_Mission.Week_Mission.posthashtag.entity.repository;
+package NWeek_Mission.Week_Mission.posthashtag.repository;
 
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
 import org.springframework.data.jpa.repository.JpaRepository;
