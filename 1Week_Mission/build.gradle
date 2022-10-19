@@ -44,6 +44,8 @@ dependencies {
 	// email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	implementation 'org.commonmark:commonmark:0.18.2'
+
 }
 
 tasks.named('test') {
