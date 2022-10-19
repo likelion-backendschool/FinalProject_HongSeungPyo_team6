@@ -1,9 +1,9 @@
-package NWeek_Mission.Week_Mission.posthashtag.entity.service;
+package NWeek_Mission.Week_Mission.posthashtag.service;
 
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
-import NWeek_Mission.Week_Mission.posthashtag.entity.repository.PostHashTagRepository;
+import NWeek_Mission.Week_Mission.posthashtag.repository.PostHashTagRepository;
 import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
 import NWeek_Mission.Week_Mission.postkeyword.service.PostKeywordService;
 import lombok.RequiredArgsConstructor;

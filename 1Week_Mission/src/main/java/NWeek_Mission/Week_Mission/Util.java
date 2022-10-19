@@ -13,4 +13,12 @@ public class Util {
         HtmlRenderer renderer = HtmlRenderer.builder().build();
         return renderer.render(document);
     }
+    public static class str {
+        public static boolean empty(String str) {
+            if (str == null) return true;
+            if (str.trim().length() == 0) return true;
+
+            return false;
+        }
+    }
 }

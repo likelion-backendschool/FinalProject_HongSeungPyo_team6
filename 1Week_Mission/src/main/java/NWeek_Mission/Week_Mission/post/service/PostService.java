@@ -4,7 +4,7 @@ import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.repository.PostRepository;
-import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
+import NWeek_Mission.Week_Mission.posthashtag.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +57,10 @@ public class PostService {
                 new PostNotFoundException("해당 글을 찾을수 없습니다.")
         );
         postRepository.delete(post);
+    }
+
+    public List<Post> search(String kw){
+        List<Post> postList = postRepository.searchQsl(kw);
+        return postList;
     }
 }
