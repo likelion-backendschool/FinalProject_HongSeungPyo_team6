@@ -1,9 +1,6 @@
 package NWeek_Mission.Week_Mission.member.controller;
 
-import NWeek_Mission.Week_Mission.member.dto.MemberContext;
-import NWeek_Mission.Week_Mission.member.dto.MemberCreateForm;
-import NWeek_Mission.Week_Mission.member.dto.MemberModifyForm;
-import NWeek_Mission.Week_Mission.member.dto.MemberModifyPasswordForm;
+import NWeek_Mission.Week_Mission.member.dto.*;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
@@ -26,6 +23,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RequestMapping("/member")
 @Controller
@@ -141,5 +139,33 @@ public class MemberController {
         session.invalidate();
 
         return "redirect:/";
+    }
+    @GetMapping("/findUsername")
+    public String showFindUsername(MemberFindUsernameForm memberFindUsernameForm){
+        return "/member/find_username";
+    }
+    @PostMapping("/findUsername")
+    public String findUsername(@Valid MemberFindUsernameForm memberFindUsernameForm, BindingResult bindingResult) throws MessagingException {
+        if (bindingResult.hasErrors()) {
+            return "/member/find_username";
+        }
+        Optional<Member> optMember = memberService.findByEmail(memberFindUsernameForm.getEmail());
+        if (!optMember.isPresent()){
+            bindingResult.rejectValue("email", "emailNotFound",
+                    "입력하신 이메일로 아이디를 찾을 수 없습니다.");
+            return "/member/find_username";
+        }
+        Member member = optMember.get();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+        mimeMessageHelper.setFrom(from); // 보낼 주소
+        mimeMessageHelper.setTo(memberFindUsernameForm.getEmail()); // 받을 주소
+        mimeMessageHelper.setSubject("eBook 아이디 찾기"); // 제목
+
+        StringBuilder body = new StringBuilder();
+        body.append("eBook 해당 아이디는 " + member.getUsername() + " 입니다."); // 내용
+        mimeMessageHelper.setText(body.toString(), true);
+        javaMailSender.send(mimeMessage);
+        return "/member/find_username";
     }
 }

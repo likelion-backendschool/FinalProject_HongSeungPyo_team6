@@ -3,13 +3,11 @@ package NWeek_Mission.Week_Mission.member.service;
 
 
 import NWeek_Mission.Week_Mission.member.entity.Member;
-import NWeek_Mission.Week_Mission.member.entity.MemberRole;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +79,9 @@ public class MemberService {
     public void modifyPassword(Member member, String password) {
         member.setPassword(passwordEncoder.encode(password));
         memberRepository.save(member);
+    }
+
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 }
