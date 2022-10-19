@@ -9,6 +9,7 @@ import NWeek_Mission.Week_Mission.postkeyword.service.PostKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,18 +20,37 @@ import java.util.stream.Collectors;
 public class PostHashTagService {
     private final PostHashTagRepository postHashTagRepository;
     private final PostKeywordService postKeywordService;
-    public void write(Member member, Post post, String keywordContentsStr) {
+    public void write(Member member,Post post, String keywordContentsStr) {
+        List<PostHashTag> oldHashTags = getHashTags(post);
+
+
+
         List<String> keywordContents = Arrays.stream(keywordContentsStr.split("#"))
                 .map(String::trim)
                 .filter(s -> s.length() > 0)
                 .collect(Collectors.toList());
 
+        List<PostHashTag> needToDelete = new ArrayList<>();
+
+        for(PostHashTag oldHashTag : oldHashTags ){
+            oldHashTag.getPostKeyword().getContent();
+
+            boolean contains = keywordContents.stream().anyMatch(s -> s.equals(oldHashTag.getPostKeyword().getContent()));
+
+            if (contains == false){
+                needToDelete.add(oldHashTag);
+            }
+        }
+
         keywordContents.forEach(keywordContent -> {
             saveHashTag(member,post,keywordContent);
         });
+        needToDelete.forEach(postHashTag -> {
+            postHashTagRepository.delete(postHashTag);
+        });
     }
 
-    private PostHashTag saveHashTag(Member member, Post post, String keywordContent) {
+    private PostHashTag saveHashTag(Member member,Post post, String keywordContent) {
         PostKeyword postKeyword = postKeywordService.save(keywordContent);
 
         Optional<PostHashTag> optPostHashTag = postHashTagRepository.findByPostIdAndPostKeywordId(post.getId(), postKeyword.getId());
@@ -47,8 +67,11 @@ public class PostHashTagService {
         return postHashTag;
     }
 
-
-    public List<PostHashTag> getHashTags(Long id) {
-        return postHashTagRepository.findByPostId(id);
+    public List<PostHashTag> getHashTags(Post post) {
+        return postHashTagRepository.findByPostId(post.getId());
     }
+
+
+
+
 }
