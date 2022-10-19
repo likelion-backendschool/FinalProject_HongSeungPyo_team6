@@ -82,4 +82,8 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(password));
         memberRepository.save(member);
     }
+
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
 }
