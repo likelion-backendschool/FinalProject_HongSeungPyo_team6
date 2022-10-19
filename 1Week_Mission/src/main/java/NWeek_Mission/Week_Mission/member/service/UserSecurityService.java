@@ -33,7 +33,8 @@ public class UserSecurityService implements UserDetailsService {
         // 권한들을 담을 빈 리스트를 만든다.
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if ("admin".equals(username)) {
+        // 권한 레벨이 7 이면 어드민 권한 획득.
+        if (member.getAuthLevel() == 7) {
             authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
         }
         // 닉네임이 존재 하면 작가회원, 존재하지 않을 경우 일반 회원.
