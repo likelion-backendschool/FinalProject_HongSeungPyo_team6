@@ -3,11 +3,13 @@ package NWeek_Mission.Week_Mission.member.service;
 
 
 import NWeek_Mission.Week_Mission.member.entity.Member;
+import NWeek_Mission.Week_Mission.member.entity.MemberRole;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,24 @@ public class MemberService {
     }
 
     public Member join(String username, String password, String email, String nickname) {
-        Member member = Member.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .email(email)
-                .nickname(nickname)
-                .build();
+        Member member = null;
+        if (nickname.trim().length() > 0){
+            member = Member.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .email(email)
+                    .nickname(nickname)
+                    .authLevel(4L)
+                    .build();
+        } else {
+             member = Member.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .email(email)
+                    .nickname(nickname)
+                     .authLevel(3L)
+                    .build();
+        }
 
         try {
             memberRepository.save(member);
@@ -47,6 +61,7 @@ public class MemberService {
     public Member modify(Member member, String nickname, String email) {
 
         member.setNickname(nickname);
+        member.setAuthLevel(4L);
         member.setEmail(email);
 
         try {

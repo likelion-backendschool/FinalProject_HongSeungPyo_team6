@@ -13,7 +13,7 @@ import java.util.List;
 public interface InitDataBefore {
     default void before(MemberService memberService, PostService postService) {
         Member member1 = memberService.join("user1", "1234", "user1@test.com","user1");
-        Member member2 = memberService.join("user2", "1234", "user2@test.com","user2");
+        Member member2 = memberService.join("user2", "1234", "user2@test.com","");
         boolean isCreate = true;
         if (isCreate == true) {
             for (int i = 1; i <= 2; i++) {

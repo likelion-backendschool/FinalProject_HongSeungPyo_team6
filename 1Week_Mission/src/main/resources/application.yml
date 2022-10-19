@@ -1,7 +1,7 @@
 # DATABASE
 spring:
   profiles:
-    active: ${activeProfile:dev}
+    active: ${activeProfile:dev, base-addi}
   jpa:
     hibernate:
       ddl-auto: create

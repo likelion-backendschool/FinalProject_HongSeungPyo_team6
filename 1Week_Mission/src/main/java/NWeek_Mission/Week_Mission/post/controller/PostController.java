@@ -11,6 +11,8 @@ import NWeek_Mission.Week_Mission.post.service.PostService;
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
 import NWeek_Mission.Week_Mission.posthashtag.entity.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
