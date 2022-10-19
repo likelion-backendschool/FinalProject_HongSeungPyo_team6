@@ -92,4 +92,10 @@ public class PostController {
         postService.write(member,postCrateForm.getSubject(),postCrateForm.getContent(),postCrateForm.getKeywords());
         return "redirect:/post/list";
     }
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id){
+        postService.deletePost(id);
+
+        return "redirect:/post/list";
+    }
 }
