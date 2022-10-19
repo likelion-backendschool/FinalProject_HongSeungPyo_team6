@@ -32,6 +32,14 @@ public class PostService {
         postHashTagService.write(member,post,keywordContentsStr);
     }
 
+    public void modify(Member member, Post post, String subject, String content, String keywordContentsStr) {
+        post.setSubject(subject);
+        post.setContent(content);
+
+        postRepository.save(post);
+        postHashTagService.write(member,post,keywordContentsStr);
+    }
+
     public List<Post> findAllNewPost() {
         return postRepository.findTop100ByOrderByCreateDateDesc();
     }
@@ -39,4 +47,6 @@ public class PostService {
     public Optional<Post> findByIdPost(Long id) {
         return postRepository.findById(id);
     }
+
+
 }

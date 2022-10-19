@@ -2,10 +2,9 @@ package NWeek_Mission.Week_Mission.post.controller;
 
 import NWeek_Mission.Week_Mission.member.dto.MemberContext;
 import NWeek_Mission.Week_Mission.member.entity.Member;
-import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
-import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
 import NWeek_Mission.Week_Mission.post.dto.PostCrateForm;
+import NWeek_Mission.Week_Mission.post.dto.PostModifyForm;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
 import NWeek_Mission.Week_Mission.post.service.PostService;
@@ -45,11 +44,37 @@ public class PostController {
         Post post = postService.findByIdPost(id).orElseThrow(() ->
                 new PostNotFoundException("해당 글을 찾을수 없습니다.")
         );
-        List<PostHashTag> postHashTagList = postHashTagService.getHashTags(post.getId());
+        List<PostHashTag> postHashTagList = postHashTagService.getHashTags(post);
         model.addAttribute("postHashTagList",postHashTagList);
         model.addAttribute("post",post);
         return "/post/detail";
     }
+    @GetMapping("/{id}/modify")
+    public String showModify(@AuthenticationPrincipal MemberContext memberContext, PostModifyForm postModifyForm, @PathVariable Long id,Model model){
+        Post post = postService.findByIdPost(id).orElseThrow(() ->
+                new PostNotFoundException("해당 글을 찾을수 없습니다.")
+        );
+        List<PostHashTag> postHashTagList = postHashTagService.getHashTags(post);
+        model.addAttribute("post",post);
+        model.addAttribute("postHashTagList",postHashTagList);
+        return "/post/modify";
+    }
+    @PostMapping("/{id}/modify")
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, @Valid PostModifyForm postModifyForm, BindingResult bindingResult, @PathVariable Long id){
+        if (bindingResult.hasErrors()) {
+            return "/post/modify";
+        }
+        Post post = postService.findByIdPost(id).orElseThrow(() ->
+                new PostNotFoundException("해당 글을 찾을수 없습니다.")
+        );
+        Member member = memberService.findByUsername(memberContext.getUsername()).orElseThrow(() ->
+                new UsernameNotFoundException("사용자를 찾을수 없습니다.")
+        );
+
+       postService.modify(member,post,postModifyForm.getSubject(),postModifyForm.getContent(), postModifyForm.getPostKeywordContents());
+        return "redirect:/post/list";
+    }
+
     @GetMapping("/write")
     public String showWrite(PostCrateForm postCrateForm){
         return "/post/write";
@@ -64,17 +89,7 @@ public class PostController {
                 new UsernameNotFoundException("사용자를 찾을수 없습니다.")
         );
 
-        try {
-            postService.write(member,postCrateForm.getSubject(),
-                    postCrateForm.getContent(),
-                    postCrateForm.getKeywords());
-        } catch (SignupEmailDuplicatedException e) {
-            bindingResult.reject("signupEmailDuplicated", e.getMessage());
-            return "/post/write";
-        } catch (SignupUsernameDuplicatedException e) {
-            bindingResult.reject("signupUsernameDuplicated", e.getMessage());
-            return "/post/write";
-        }
+        postService.write(member,postCrateForm.getSubject(),postCrateForm.getContent(),postCrateForm.getKeywords());
         return "redirect:/post/list";
     }
 }
