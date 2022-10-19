@@ -14,9 +14,9 @@ public interface InitDataBefore {
     default void before(MemberService memberService, PostService postService) {
         Member member1 = memberService.join("user1", "1234", "user1@test.com","user1");
         Member member2 = memberService.join("user2", "1234", "user2@test.com","user2");
-        boolean isCreate = false;
+        boolean isCreate = true;
         if (isCreate == true) {
-            for (int i = 1; i <= 200; i++) {
+            for (int i = 1; i <= 2; i++) {
                 Post post = Post.builder()
                         .author(member1)
                         .content("내용" + i)
