@@ -31,8 +31,8 @@ public class PostController {
 
     private final PostHashTagService postHashTagService;
     @GetMapping("/list")
-    public String showList(Model model, @RequestParam(defaultValue = "") String kw){
-        List<Post> postList = postService.search(kw);
+    public String showList(Model model, @RequestParam(defaultValue = "") String kw, @AuthenticationPrincipal MemberContext memberContext){
+        List<Post> postList = postService.search(kw,memberContext);
         model.addAttribute("postList",postList);
         return "/post/list";
     }

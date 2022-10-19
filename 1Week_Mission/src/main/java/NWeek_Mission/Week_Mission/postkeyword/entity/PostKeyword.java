@@ -1,4 +1,4 @@
-package NWeek_Mission.Week_Mission.postkeyword;
+package NWeek_Mission.Week_Mission.postkeyword.entity;
 
 import NWeek_Mission.Week_Mission.base.entity.BaseEntity;
 import lombok.Getter;

@@ -4,8 +4,6 @@ import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.service.PostService;
-import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
-import NWeek_Mission.Week_Mission.postkeyword.service.PostKeywordService;
 
 import java.util.ArrayList;
 import java.util.List;

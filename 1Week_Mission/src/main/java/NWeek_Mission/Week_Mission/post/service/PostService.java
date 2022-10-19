@@ -1,5 +1,6 @@
 package NWeek_Mission.Week_Mission.post.service;
 
+import NWeek_Mission.Week_Mission.member.dto.MemberContext;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.post.entity.Post;
 import NWeek_Mission.Week_Mission.post.exception.PostNotFoundException;
@@ -59,8 +60,8 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<Post> search(String kw){
-        List<Post> postList = postRepository.searchQsl(kw);
+    public List<Post> search(String kw, MemberContext memberContext){
+        List<Post> postList = postRepository.searchQsl(kw,memberContext);
         return postList;
     }
 }

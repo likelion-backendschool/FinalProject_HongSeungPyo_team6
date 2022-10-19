@@ -1,7 +1,6 @@
 package NWeek_Mission.Week_Mission.postkeyword.service;
 
-import NWeek_Mission.Week_Mission.post.entity.Post;
-import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
+import NWeek_Mission.Week_Mission.postkeyword.entity.PostKeyword;
 import NWeek_Mission.Week_Mission.postkeyword.repository.PostKeywordRepository;
 import javassist.compiler.ast.Keyword;
 import lombok.RequiredArgsConstructor;

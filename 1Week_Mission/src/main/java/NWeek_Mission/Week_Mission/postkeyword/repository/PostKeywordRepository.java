@@ -1,6 +1,6 @@
 package NWeek_Mission.Week_Mission.postkeyword.repository;
 
-import NWeek_Mission.Week_Mission.postkeyword.PostKeyword;
+import NWeek_Mission.Week_Mission.postkeyword.entity.PostKeyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
