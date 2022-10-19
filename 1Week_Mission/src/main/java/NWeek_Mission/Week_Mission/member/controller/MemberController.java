@@ -9,6 +9,9 @@ import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedExceptio
 import NWeek_Mission.Week_Mission.member.exception.SignupUsernameDuplicatedException;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -28,6 +33,12 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    private final JavaMailSender javaMailSender;
+
+    @Value("${spring.mail.username}") // 보내는 사람 메일 주소
+    private String from;
+
     @GetMapping("/login")
     public String login(){
         return "/member/login";
@@ -40,7 +51,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult){
+    public String join(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) throws MessagingException {
         if (bindingResult.hasErrors()) {
             return "/member/join";
         }
@@ -55,6 +66,17 @@ public class MemberController {
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
             return "/member/join";
         }
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+        mimeMessageHelper.setFrom(from); // 보낼 주소
+        mimeMessageHelper.setTo(memberCreateForm.getEmail()); // 받을 주소
+        mimeMessageHelper.setSubject("회원가입 축하 이메일"); // 제목
+
+        StringBuilder body = new StringBuilder();
+        body.append("eBook 회원가입을 축하합니다."); // 내용
+        mimeMessageHelper.setText(body.toString(), true);
+        javaMailSender.send(mimeMessage);
 
         return "redirect:/";
     }

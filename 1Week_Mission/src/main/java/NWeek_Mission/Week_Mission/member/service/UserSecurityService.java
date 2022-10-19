@@ -36,8 +36,13 @@ public class UserSecurityService implements UserDetailsService {
         if ("admin".equals(username)) {
             authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
         }
+        // 닉네임이 존재 하면 작가회원, 존재하지 않을 경우 일반 회원.
+        if (member.getNickname().trim().length() > 0){
+            authorities.add(new SimpleGrantedAuthority(MemberRole.WRITER.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.MEMBER.getValue()));
+        }
 
-        authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
 
         return new MemberContext(member);
     }
