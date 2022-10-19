@@ -25,7 +25,7 @@ public interface InitDataBefore {
                         .subject("게시물" + i)
                         .contentHtml("내용" + i)
                         .build();
-                postService.write(member1, post.getSubject(), post.getContent(), "#자바 #스프링부트 #스프링");
+                postService.write(member1, post.getSubject(), post.getContent(), post.getContentHtml(), "#자바 #스프링부트 #스프링");
             }
         }
 

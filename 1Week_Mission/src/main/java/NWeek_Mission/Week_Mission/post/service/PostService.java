@@ -21,11 +21,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void write(Member member, String subject, String content,String keywordContentsStr) {
+    public void write(Member member, String subject, String content,String contentHtml ,String keywordContentsStr) {
         Post post = Post.builder()
                     .subject(subject)
                     .content(content)
-                    .contentHtml(content)
+                    .contentHtml(contentHtml)
                     .author(member)
                     .build();
 
@@ -33,9 +33,10 @@ public class PostService {
         postHashTagService.write(member,post,keywordContentsStr);
     }
 
-    public void modify(Member member, Post post, String subject, String content, String keywordContentsStr) {
+    public void modify(Member member, Post post, String subject, String content,String contentHtml, String keywordContentsStr) {
         post.setSubject(subject);
         post.setContent(content);
+        post.setContentHtml(contentHtml);
 
         postRepository.save(post);
         postHashTagService.write(member,post,keywordContentsStr);
