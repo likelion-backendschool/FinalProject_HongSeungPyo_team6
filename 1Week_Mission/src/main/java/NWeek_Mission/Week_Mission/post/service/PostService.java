@@ -61,7 +61,7 @@ public class PostService {
     }
 
     public List<Post> search(String kw, MemberContext memberContext){
-        List<Post> postList = postRepository.searchQsl(kw,memberContext);
+        List<Post> postList = postRepository.searchByKeywordAndMember(kw,memberContext);
         return postList;
     }
 }

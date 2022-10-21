@@ -18,7 +18,7 @@ import static NWeek_Mission.Week_Mission.postkeyword.entity.QPostKeyword.postKey
 public class PostRepositoryImpl implements PostRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
     @Override
-    public List<Post> searchQsl(String kw, MemberContext memberContext) {
+    public List<Post> searchByKeywordAndMember(String kw, MemberContext memberContext) {
         JPAQuery<Post> jpaQuery = jpaQueryFactory
                 .select(post)
                 .distinct()
