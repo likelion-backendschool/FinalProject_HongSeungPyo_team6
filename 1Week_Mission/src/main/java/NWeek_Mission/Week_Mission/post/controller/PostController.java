@@ -1,6 +1,8 @@
 package NWeek_Mission.Week_Mission.post.controller;
 
+
 import NWeek_Mission.Week_Mission.Ut;
+
 import NWeek_Mission.Week_Mission.member.dto.MemberContext;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
@@ -12,6 +14,8 @@ import NWeek_Mission.Week_Mission.post.service.PostService;
 import NWeek_Mission.Week_Mission.posthashtag.entity.PostHashTag;
 import NWeek_Mission.Week_Mission.posthashtag.service.PostHashTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -69,6 +73,7 @@ public class PostController {
                 new UsernameNotFoundException("사용자를 찾을수 없습니다.")
         );
         String contentHtml = Ut.markdown(postModifyForm.getContent());
+
        postService.modify(member,post,postModifyForm.getSubject(),postModifyForm.getContent(),contentHtml, postModifyForm.getPostKeywordContents());
         return "redirect:/post/list";
     }
@@ -87,13 +92,13 @@ public class PostController {
                 new UsernameNotFoundException("사용자를 찾을수 없습니다.")
         );
         String contentHtml = Ut.markdown(postCrateForm.getContent());
+
         postService.write(member,postCrateForm.getSubject(),postCrateForm.getContent(), contentHtml,postCrateForm.getKeywords());
         return "redirect:/post/list";
     }
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
         postService.deletePost(id);
-
         return "redirect:/post/list";
     }
 }

@@ -64,4 +64,5 @@ public class PostService {
         List<Post> postList = postRepository.searchByKeywordAndMember(kw,memberContext);
         return postList;
     }
+
 }

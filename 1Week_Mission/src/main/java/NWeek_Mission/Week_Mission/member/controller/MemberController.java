@@ -1,6 +1,8 @@
 package NWeek_Mission.Week_Mission.member.controller;
 
+
 import NWeek_Mission.Week_Mission.mail.MailService;
+
 import NWeek_Mission.Week_Mission.member.dto.*;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
@@ -10,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,9 +40,9 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-
     private final MailService mailService;
     
+
     @GetMapping("/login")
     public String login(){
         return "/member/login";
@@ -67,8 +71,8 @@ public class MemberController {
             return "/member/join";
         }
 
-
         mailService.sendMail(memberCreateForm.getEmail(),"회원가입 축하 이메일","eBook 회원가입에 축하드립니다!");
+
         return "redirect:/";
     }
     @GetMapping("/modify")
