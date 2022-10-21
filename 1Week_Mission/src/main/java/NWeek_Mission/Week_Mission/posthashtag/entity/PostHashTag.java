@@ -16,6 +16,10 @@ import javax.persistence.*;
 @Entity
 @SuperBuilder
 @NoArgsConstructor
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"post_id", "post_keyword_id"})
+)
 public class PostHashTag extends BaseEntity {
     @ManyToOne
     private Member member;

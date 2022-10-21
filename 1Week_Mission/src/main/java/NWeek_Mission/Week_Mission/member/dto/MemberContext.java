@@ -4,6 +4,7 @@ import NWeek_Mission.Week_Mission.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -12,15 +13,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @JsonIncludeProperties({"id", "createDate", "modifyDate", "username", "email", "authorities"})
 public class MemberContext extends User {
     private final long id;
     private final LocalDateTime createDate;
-    private final LocalDateTime modifyDate;
+    private LocalDateTime modifyDate;
     private final String username;
-    private final String nickname;
-    private final String email;
-    private final Set<GrantedAuthority> authorities;
+    private String nickname;
+    private String email;
+    private Set<GrantedAuthority> authorities;
     public MemberContext(Member member) {
         super(member.getUsername(), member.getPassword(), member.getAuthorities());
         id = member.getId();
@@ -52,4 +54,5 @@ public class MemberContext extends User {
         return getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authorityName));
     }
+
 }
