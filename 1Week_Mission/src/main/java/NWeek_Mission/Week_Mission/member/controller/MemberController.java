@@ -1,5 +1,8 @@
 package NWeek_Mission.Week_Mission.member.controller;
 
+
+import NWeek_Mission.Week_Mission.mail.MailService;
+
 import NWeek_Mission.Week_Mission.member.dto.*;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.exception.SignupEmailDuplicatedException;
@@ -9,7 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,10 +40,8 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-    private final JavaMailSender javaMailSender;
-
-    @Value("${spring.mail.username}") // 보내는 사람 메일 주소
-    private String from;
+    private final MailService mailService;
+    
 
     @GetMapping("/login")
     public String login(){
@@ -65,16 +71,7 @@ public class MemberController {
             return "/member/join";
         }
 
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
-        mimeMessageHelper.setFrom(from); // 보낼 주소
-        mimeMessageHelper.setTo(memberCreateForm.getEmail()); // 받을 주소
-        mimeMessageHelper.setSubject("회원가입 축하 이메일"); // 제목
-
-        StringBuilder body = new StringBuilder();
-        body.append("eBook 회원가입을 축하합니다."); // 내용
-        mimeMessageHelper.setText(body.toString(), true);
-        javaMailSender.send(mimeMessage);
+        mailService.sendMail(memberCreateForm.getEmail(),"회원가입 축하 이메일","eBook 회원가입에 축하드립니다!");
 
         return "redirect:/";
     }
@@ -84,7 +81,7 @@ public class MemberController {
     }
 
     @PostMapping("/modify")
-    public String modify(@Valid MemberModifyForm memberModifyForm, BindingResult bindingResult, @AuthenticationPrincipal MemberContext memberContext, HttpSession session){
+    public String modify(@Valid MemberModifyForm memberModifyForm, BindingResult bindingResult, @AuthenticationPrincipal MemberContext memberContext){
         if (bindingResult.hasErrors()) {
             return "/member/modify";
         }
@@ -105,10 +102,13 @@ public class MemberController {
             return "/member/modify";
         }
 
-        // 회원 수정 후 session 을 종료 시켜 다시 로그인 하게 만듦.
-        session.invalidate();
+        memberContext.setModifyDate(member.getModifyDate());
+        memberContext.setEmail(member.getEmail());
+        memberContext.setNickname(member.getNickname());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "redirect:/";
+        return "redirect:/member/modify";
     }
     @GetMapping("/modifyPassword")
     public String showModifyPassword(MemberModifyPasswordForm memberModifyForm){
@@ -156,16 +156,7 @@ public class MemberController {
             return "/member/find_username";
         }
         Member member = optMember.get();
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
-        mimeMessageHelper.setFrom(from); // 보낼 주소
-        mimeMessageHelper.setTo(memberFindUsernameForm.getEmail()); // 받을 주소
-        mimeMessageHelper.setSubject("eBook 아이디 찾기"); // 제목
-
-        StringBuilder body = new StringBuilder();
-        body.append("eBook 해당 아이디는 " + member.getUsername() + " 입니다."); // 내용
-        mimeMessageHelper.setText(body.toString(), true);
-        javaMailSender.send(mimeMessage);
+        mailService.sendMail(memberFindUsernameForm.getEmail(),"eBook 아이디 찾기","eBook 해당 아이디는 " + member.getUsername() + " 입니다.");
         return "/member/find_username";
     }
 }

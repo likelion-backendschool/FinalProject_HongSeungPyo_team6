@@ -34,3 +34,8 @@ logging:
           descriptor:
             sql: trace
 
+custom:
+  site:
+    name: eBook
+    baseUrl: "http://localhost:8080"
+
