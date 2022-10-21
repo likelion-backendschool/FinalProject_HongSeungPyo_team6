@@ -1,6 +1,6 @@
 package NWeek_Mission.Week_Mission.post.controller;
 
-import NWeek_Mission.Week_Mission.Util;
+import NWeek_Mission.Week_Mission.Ut;
 import NWeek_Mission.Week_Mission.member.dto.MemberContext;
 import NWeek_Mission.Week_Mission.member.entity.Member;
 import NWeek_Mission.Week_Mission.member.service.MemberService;
@@ -68,7 +68,7 @@ public class PostController {
         Member member = memberService.findByUsername(memberContext.getUsername()).orElseThrow(() ->
                 new UsernameNotFoundException("사용자를 찾을수 없습니다.")
         );
-        String contentHtml = Util.markdown(postModifyForm.getContent());
+        String contentHtml = Ut.markdown(postModifyForm.getContent());
        postService.modify(member,post,postModifyForm.getSubject(),postModifyForm.getContent(),contentHtml, postModifyForm.getPostKeywordContents());
         return "redirect:/post/list";
     }
@@ -86,7 +86,7 @@ public class PostController {
         Member member = memberService.findByUsername(memberContext.getUsername()).orElseThrow(() ->
                 new UsernameNotFoundException("사용자를 찾을수 없습니다.")
         );
-        String contentHtml = Util.markdown(postCrateForm.getContent());
+        String contentHtml = Ut.markdown(postCrateForm.getContent());
         postService.write(member,postCrateForm.getSubject(),postCrateForm.getContent(), contentHtml,postCrateForm.getKeywords());
         return "redirect:/post/list";
     }
