@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
+@Table(name = "product_order")
 public class Order extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Member buyer;

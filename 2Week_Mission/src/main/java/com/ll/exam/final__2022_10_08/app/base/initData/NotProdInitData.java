@@ -1,8 +1,11 @@
 package com.ll.exam.final__2022_10_08.app.base.initData;
 
+import com.ll.exam.final__2022_10_08.app.cartitem.entity.CartItem;
 import com.ll.exam.final__2022_10_08.app.cartitem.service.CartItemService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
+import com.ll.exam.final__2022_10_08.app.order.entity.Order;
+import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
 import com.ll.exam.final__2022_10_08.app.post.service.PostService;
 import com.ll.exam.final__2022_10_08.app.product.entity.Product;
 import com.ll.exam.final__2022_10_08.app.product.service.ProductService;
@@ -21,7 +24,8 @@ public class NotProdInitData {
             MemberService memberService,
             PostService postService,
             ProductService productService,
-            CartItemService cartItemService
+            CartItemService cartItemService,
+            OrderService orderService
     ) {
         return args -> {
             if (initDataDone) {
@@ -71,9 +75,13 @@ public class NotProdInitData {
             Product product3 = productService.create(member1, "상품명3", 50_000, "REACT", "#IT #REACT");
             Product product4 = productService.create(member2, "상품명4", 60_000, "HTML", "#IT #HTML");
 
-            cartItemService.addItem(member2,product1);
-            cartItemService.addItem(member2,product2);
-            cartItemService.addItem(member2,product3);
+            CartItem cartItem1 = cartItemService.addItem(member2,product1);
+            CartItem cartItem2 = cartItemService.addItem(member2,product2);
+            CartItem cartItem3 = cartItemService.addItem(member2,product3);
+
+            Order order = orderService.createFromCart(member2);
+
+
         };
     }
 }
