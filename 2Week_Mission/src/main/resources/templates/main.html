@@ -1,0 +1,43 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+
+    <table class="table text-center">
+        <colgroup>
+            <col>
+            <col width="50%">
+        </colgroup>
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성날짜</th>
+            <th>수정날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${postList}">
+            <td th:text="${post.id}"></td>
+            <td class="text-start">
+                <a th:href="@{|/post/${post.id}|}" th:text="${post.subject}"></a>
+            </td>
+            <td>
+                <span th:text="${post.author.nickname}"></span>
+            </td>
+            <td>
+                <span th:text="${post.createDate}"></span>
+            </td>
+            <td>
+                <span th:text="${post.modifyDate}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</html>

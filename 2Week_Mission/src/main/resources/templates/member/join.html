@@ -1,0 +1,36 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+
+    <form method="post" th:action="@{/member/join}" th:object="${memberCreateForm}">
+
+        <div th:replace="form_errors :: formErrorsFragment"></div>
+        <div class="mb-2">
+            <span>아이디</span>
+            <input type="text" name="username"/>
+        </div>
+        <div class="mb-2">
+            <span>닉네임</span>
+            <input type="text" name="nickname"/>
+        </div>
+        <div class="mb-2">
+            <span>비밀번호</span>
+            <input type="password" name="password"/>
+        </div>
+        <div class="mb-2">
+            <span>비밀번호 확인</span>
+            <input type="password" name="passwordConfirm"/>
+        </div>
+        <div class="mb-2">
+            <span>이메일</span>
+            <input type="email" name="email"/>
+        </div>
+        <button type="submit">회원가입</button>
+    </form>
+
+</div>
+
+</html>
