@@ -145,8 +145,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void addCache(Member member, long cache) {
-        cashLogService.addCacheLog(member,cache);
+    public void addCash(Member member, long cache, String eventType) {
+        cashLogService.addCacheLog(member,cache, eventType);
         // 회원의 남은 캐시
         long restCash = member.getRestCash();
         // 회원의 충전 캐시

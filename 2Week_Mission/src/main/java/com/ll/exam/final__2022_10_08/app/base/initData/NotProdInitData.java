@@ -84,7 +84,12 @@ public class NotProdInitData {
 
             Order order = orderService.createFromCart(member2);
 
-            memberService.addCache(member1,10_000);
+            // 1만원 충전
+            memberService.addCash(member1, 10_000, "충전__무통장입금");
+            // 이만원 충전
+            memberService.addCash(member1, 20_000, "충전__무통장입금");
+            // 5천원 사용
+            memberService.addCash(member1, -5_000, "출금__일반");
         };
     }
 }

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CashLogService {
     private final CashLogRepository cashLogRepository;
-    public void addCacheLog(Member member, long cache) {
+    public void addCacheLog(Member member, long cache, String eventType) {
         CashLog cashLog = CashLog.builder()
                 .price(cache)
                 .price(cache)
-                .eventType("예치금__충전__"+cache+"")
+                .eventType(eventType)
                 .build();
         cashLogRepository.save(cashLog);
     }
