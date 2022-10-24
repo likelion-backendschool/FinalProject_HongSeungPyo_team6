@@ -1,8 +1,11 @@
 package com.ll.exam.final__2022_10_08.app.order.service;
 
+import com.ll.exam.final__2022_10_08.app.base.exception.ShortageMoneyException;
 import com.ll.exam.final__2022_10_08.app.cartitem.entity.CartItem;
 import com.ll.exam.final__2022_10_08.app.cartitem.service.CartItemService;
+import com.ll.exam.final__2022_10_08.app.cashlog.CashLogService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
+import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.repository.OrderRepository;
 import com.ll.exam.final__2022_10_08.app.orderitem.entity.OrderItem;
@@ -21,6 +24,8 @@ public class OrderService {
 
     private final CartItemService cartItemService;
     private final OrderRepository orderRepository;
+
+    private final MemberService memberService;
     // 모든 장바구니로부터 주문 하기.
     @Transactional
     public Order createFromCart(Member buyer) {
@@ -62,5 +67,22 @@ public class OrderService {
 
         return order;
     }
+    @Transactional
+    public void addOrder(Order order) {
+        Member buyer = order.getBuyer();
+        // 유저의 남은 금액
+        long restCash = buyer.getRestCash();
+        // 주문 폼목에 대한 결제 금액
+        long payPrice = order.calculatePayPrice();
 
+        // 남은 금액보다 주문 금액이 클 경우 에러 처리.
+        // == 가지고 있는 금액과 주문 금액이 부족할 경우
+        if (restCash < payPrice){
+            throw new ShortageMoneyException();
+        }
+
+        memberService.addCash(buyer,payPrice * (-1),"결제__예치금");
+        order.setPaymentDone();
+        orderRepository.save(order);
+    }
 }

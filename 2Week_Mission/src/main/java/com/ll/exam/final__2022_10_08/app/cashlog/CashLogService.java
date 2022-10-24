@@ -12,7 +12,7 @@ public class CashLogService {
     private final CashLogRepository cashLogRepository;
     public void addCacheLog(Member member, long cache, String eventType) {
         CashLog cashLog = CashLog.builder()
-                .price(cache)
+                .member(member)
                 .price(cache)
                 .eventType(eventType)
                 .build();
