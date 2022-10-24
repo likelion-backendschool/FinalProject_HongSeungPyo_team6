@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: "jdbc:mariadb://127.0.0.1:3306/eBook?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul"
-    username: "test"
-    password: "test1234!@#$"
