@@ -6,6 +6,8 @@ import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
+import com.ll.exam.final__2022_10_08.app.orderitem.entity.OrderItem;
+import com.ll.exam.final__2022_10_08.app.orderitem.service.OrderItemService;
 import com.ll.exam.final__2022_10_08.app.post.service.PostService;
 import com.ll.exam.final__2022_10_08.app.product.entity.Product;
 import com.ll.exam.final__2022_10_08.app.product.service.ProductService;
@@ -25,7 +27,8 @@ public class NotProdInitData {
             PostService postService,
             ProductService productService,
             CartItemService cartItemService,
-            OrderService orderService
+            OrderService orderService,
+            OrderItemService orderItemService
     ) {
         return args -> {
             if (initDataDone) {
@@ -81,7 +84,7 @@ public class NotProdInitData {
 
             Order order = orderService.createFromCart(member2);
 
-
+            memberService.addCache(member1,10_000);
         };
     }
 }
