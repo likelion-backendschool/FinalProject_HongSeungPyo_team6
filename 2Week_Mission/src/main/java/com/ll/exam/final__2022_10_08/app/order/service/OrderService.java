@@ -5,6 +5,7 @@ import com.ll.exam.final__2022_10_08.app.cartitem.entity.CartItem;
 import com.ll.exam.final__2022_10_08.app.cartitem.service.CartItemService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
+import com.ll.exam.final__2022_10_08.app.mybook.service.MyBookService;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.repository.OrderRepository;
 import com.ll.exam.final__2022_10_08.app.orderitem.entity.OrderItem;
@@ -25,8 +26,8 @@ public class OrderService {
 
     private final CartItemService cartItemService;
     private final OrderRepository orderRepository;
-
     private final MemberService memberService;
+    private final MyBookService myBookService;
     // 모든 장바구니로부터 주문 하기.
     @Transactional
     public Order createFromCart(Member buyer) {
@@ -116,6 +117,12 @@ public class OrderService {
         memberService.addCash(member,payPriceRestCash * (-1),"결제__예치금");
         order.setPaymentDone();
         orderRepository.save(order);
+
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (OrderItem orderItem : orderItems){
+            Product product = orderItem.getProduct();
+            myBookService.create(member,product);
+        }
     }
 
     public Optional<Order> findForPrintById(long orderId) {
@@ -128,5 +135,11 @@ public class OrderService {
         memberService.addCash(member,order.calculatePayPrice() * (-1),"결제__예치금");
         order.setPaymentDone();
         orderRepository.save(order);
+
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (OrderItem orderItem : orderItems){
+            Product product = orderItem.getProduct();
+            myBookService.create(member,product);
+        }
     }
 }
