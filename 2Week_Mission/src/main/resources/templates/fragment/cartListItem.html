@@ -38,13 +38,17 @@
                 </div>
             </div>
             <div class="card-actions justify-end">
+                <form method="POST" th:action="@{|/cart/remove/${cartItem.id}|}" class="btn btn-sm">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <button type="submit" class="ml-2">장바구니 삭제</button>
+                </form>
                 <a th:href="@{|/product/${cartItem.product.id}|}" class="btn btn-sm">
                     <i class="fa-solid fa-eye"></i>
                     <span class="ml-2">보기</span>
                 </a>
             </div>
             <div class="card-actions justify-end">
-                    <span class="ml-2 productPrice" th:text="@{|${cartItem.product.price}원|}"></span>
+                    <span class="ml-2 productPrice" th:text="@{|\ ${cartItem.product.price}|}"></span>
             </div>
         </div>
     </div>

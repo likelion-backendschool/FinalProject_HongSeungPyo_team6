@@ -35,22 +35,31 @@ public class CartController {
     }
 
     @Transactional
+    @PostMapping("/remove/{cartItemId}")
+    public String removeItem(@PathVariable long cartItemId){
+        Member member = rq.getMember();
+        CartItem cartItem = cartItemService.findByMemberAndCartItem(cartItemId, member.getId()).orElse(null);
+        cartItemService.removeItem(cartItem);
+        return "redirect:/cart/list";
+    }
+
+    @Transactional
     @PostMapping("/removeItems")
     public String removeItems(String ids){
         Member member = rq.getMember();
         String[] idsBits = ids.split(",");
         for (String idsBit : idsBits){
-            CartItem cartItem = cartItemService.findByCartItem(Integer.parseInt(idsBit)).orElse(null);
+            CartItem cartItem = cartItemService.findByMemberAndCartItem(Integer.parseInt(idsBit), member.getId()).orElse(null);
             cartItemService.removeItem(cartItem);
         }
         return "redirect:/cart/list";
     }
 
     @Transactional
-    @GetMapping("/add/{id}")
-    public String addCartItem(@PathVariable long id){
+    @GetMapping("/add/{productId}")
+    public String addCartItem(@PathVariable long productId){
         Member member = rq.getMember();
-        Product product = productService.findById(id).orElse(null);
+        Product product = productService.findById(productId).orElse(null);
         cartItemService.addItem(member,product);
         return "redirect:/product/list";
     }
