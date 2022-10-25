@@ -25,6 +25,8 @@ public class CartController {
     private final Rq rq;
     private final CartItemService cartItemService;
 
+
+
     private final ProductService productService;
     @GetMapping("/list")
     public String getList(Model model){
@@ -38,7 +40,7 @@ public class CartController {
     @PostMapping("/remove/{cartItemId}")
     public String removeItem(@PathVariable long cartItemId){
         Member member = rq.getMember();
-        CartItem cartItem = cartItemService.findByMemberAndCartItem(cartItemId, member.getId()).orElse(null);
+        CartItem cartItem = cartItemService.findByCartItemAndMember(cartItemId, member.getId()).orElse(null);
         cartItemService.removeItem(cartItem);
         return "redirect:/cart/list";
     }
@@ -49,7 +51,7 @@ public class CartController {
         Member member = rq.getMember();
         String[] idsBits = ids.split(",");
         for (String idsBit : idsBits){
-            CartItem cartItem = cartItemService.findByMemberAndCartItem(Integer.parseInt(idsBit), member.getId()).orElse(null);
+            CartItem cartItem = cartItemService.findByCartItemAndMember(Integer.parseInt(idsBit), member.getId()).orElse(null);
             cartItemService.removeItem(cartItem);
         }
         return "redirect:/cart/list";

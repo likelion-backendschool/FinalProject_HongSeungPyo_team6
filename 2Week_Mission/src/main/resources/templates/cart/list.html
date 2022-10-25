@@ -27,10 +27,13 @@
                 <input type="hidden" name="ids">
             </form>
 
-            <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">주문하기</a>
-            <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden>
+            <a href="javascript:;" onclick="OrderSelectCartItemForm__submit();" class="btn btn-primary btn-sm">선택 주문하기</a>
+            <form method="POST" name="orderSelectCartItemForm" th:action="@{|/order/create|}" hidden>
                 <input type="hidden" name="ids">
             </form>
+
+            <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">전체 주문하기</a>
+            <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden></form>
         </div>
     </section>
     <script>
@@ -78,12 +81,12 @@
             form.submit();
             RemoveCartItemsForm__submitDone = true;
         }
-        let OrderCartItemsForm__submitDone = false;
-        function OrderCartItemsForm__submit() {
-            if (OrderCartItemsForm__submitDone) return;
+        let OrderSelectCartItemsForm__submitDone = false;
+        function OrderSelectCartItemForm__submit() {
+            if (OrderSelectCartItemsForm__submitDone) return;
 
             // removeCartItemsForm 라는 폼 찾기
-            const form = document.orderCartItemsForm;
+            const form = document.orderSelectCartItemForm;
 
             // checked 되어 있는 것들을 다 가져오기.
             const $checked = $('.cartItemCheckbox:checked');
@@ -101,7 +104,10 @@
             // input 에다가 배열을 못넣기 때문에 문장화 시켜서 넣어주는 것이다.
             form.ids.value = ids;
             form.submit();
-            OrderCartItemsForm__submitDone = true;
+            OrderSelectCartItemsForm__submitDone = true;
+        }
+        function OrderCartItemsForm__submit(){
+            document.orderCartItemsForm.submit();
         }
     </script>
 </main>

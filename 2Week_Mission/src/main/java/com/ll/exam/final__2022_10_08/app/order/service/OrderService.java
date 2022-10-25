@@ -32,9 +32,25 @@ public class OrderService {
         // 입력된 회원의 장바구니 아이템들을 전부 가져온다.
         List<CartItem> cartItems = cartItemService.getItemsByBuyer(buyer);
 
+        return getOrder(buyer, cartItems);
+    }
+
+    @Transactional
+    public Order createFromSelectCart(Member buyer, String cartItemIds){
+
+        String[] cartItemIdsBits = cartItemIds.split(",");
+        List<CartItem> cartItems = new ArrayList<>();
+        for (String cartItemId : cartItemIdsBits){
+            // 입력된 회원의 장바구니 아이템들을 전부 가져온다.
+            CartItem cartItem = cartItemService.findByCartItemAndMember(Long.parseLong(cartItemId),buyer.getId()).orElse(null);
+            cartItems.add(cartItem);
+        }
+        return getOrder(buyer, cartItems);
+    }
+
+    public Order getOrder(Member buyer, List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>();
 
-        // 모든 장바구니에 있는 것들 중 주문이 가능한 상품만 추가해주는 구문.
         for (CartItem cartItem : cartItems) {
             Product product = cartItem.getProduct();
 
@@ -83,5 +99,9 @@ public class OrderService {
         memberService.addCash(buyer,payPrice * (-1),"결제__예치금");
         order.setPaymentDone();
         orderRepository.save(order);
+    }
+
+    public Order getOrder(Member member) {
+        return orderRepository.findByBuyerId(member.getId());
     }
 }
