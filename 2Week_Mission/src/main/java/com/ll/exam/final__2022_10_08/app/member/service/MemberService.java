@@ -2,7 +2,7 @@ package com.ll.exam.final__2022_10_08.app.member.service;
 
 import com.ll.exam.final__2022_10_08.app.AppConfig;
 import com.ll.exam.final__2022_10_08.app.base.dto.RsData;
-import com.ll.exam.final__2022_10_08.app.cashlog.CashLogService;
+import com.ll.exam.final__2022_10_08.app.cashlog.service.CashLogService;
 import com.ll.exam.final__2022_10_08.app.email.service.EmailService;
 import com.ll.exam.final__2022_10_08.app.emailVerification.service.EmailVerificationService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;

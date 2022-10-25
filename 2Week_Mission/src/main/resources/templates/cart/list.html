@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/layout/layout}">
+
+<head>
+    <title>메인</title>
+</head>
+
+<main layout:fragment="main">
+    <section class="section section-post-list container mx-auto">
+
+        <div class="px-2 pt-4">
+            <h1 class="font-bold text-lg">
+                <i class="fa-solid fa-cart-shopping"></i>
+                장바구니 목록
+            </h1>
+            <input type="checkbox" class="cartItemCheckboxAll checkbox">
+            <div class="mt-2">
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+
+                    <li th:each="cartItem : ${cartItems}">
+                        <th:block th:replace="fragment/cartListItem :: cartListItem" ></th:block>
+                    </li>
+                </ul>
+            </div>
+            <a href="javascript:;" onclick="RemoveCartItemsForm__submit();" class="btn btn-warning btn-outline btn-sm">선택삭제</a>
+            <form method="POST" name="removeCartItemsForm" th:action="@{|/cart/removeItems|}" hidden>
+                <input type="hidden" name="ids">
+            </form>
+
+            <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">주문하기</a>
+            <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden>
+                <input type="hidden" name="ids">
+            </form>
+        </div>
+    </section>
+    <script>
+        // 전체선택 체크박스
+        const $cartItemCheckboxAll = $('.cartItemCheckboxAll');
+        // 아이템 체크박스
+        const $cartItemCheckbox = $('.cartItemCheckbox');
+
+        $cartItemCheckboxAll.change(function () {
+            // 자기의 checked 의 상태를 알 수 있다.
+            const allChecked = $(this).prop('checked');
+            $cartItemCheckbox.prop('checked', allChecked); // 아이템 체크박스들에게 체크상태 동기화
+        });
+
+        function CartItemCheckbox__changed() {
+            // $('.cartItemCheckbox:checked') : class 명이 cartItemCheckbox 면서 checked 되어 있는 것을 얘기한다.
+            const allChecked = $cartItemCheckbox.length == $('.cartItemCheckbox:checked').length;
+
+            $cartItemCheckboxAll.prop('checked', allChecked);
+        }
+        // 중복 제출 방지를 위한 변수 ( 제출 후 true 를 만들어 중복 방지 )
+        let RemoveCartItemsForm__submitDone = false;
+
+        function RemoveCartItemsForm__submit() {
+            if (RemoveCartItemsForm__submitDone) return;
+
+            // removeCartItemsForm 라는 폼 찾기
+            const form = document.removeCartItemsForm;
+
+            // checked 되어 있는 것들을 다 가져오기.
+            const $checked = $('.cartItemCheckbox:checked');
+
+            if ($checked.length == 0) {
+                alert('삭제할 장바구니 품목을 선택해주세요.');
+                return;
+            }
+
+            // 배열을 문장화 시켜줌.
+            // $checked 는 checkbox 의 check 되어 있는 것들을 싹다 가져와서 배열로 되어 있는데
+            // 밑에 작업 때문에 ids 는 문장화 되어진다.
+            // index 는 index 가 나오게 되고, el 는 element들이 나오게 된다.
+            const ids = $checked.map((index, el) => $(el).val()).get();
+            // input 에다가 배열을 못넣기 때문에 문장화 시켜서 넣어주는 것이다.
+            form.ids.value = ids;
+            form.submit();
+            RemoveCartItemsForm__submitDone = true;
+        }
+        let OrderCartItemsForm__submitDone = false;
+        function OrderCartItemsForm__submit() {
+            if (OrderCartItemsForm__submitDone) return;
+
+            // removeCartItemsForm 라는 폼 찾기
+            const form = document.orderCartItemsForm;
+
+            // checked 되어 있는 것들을 다 가져오기.
+            const $checked = $('.cartItemCheckbox:checked');
+
+            if ($checked.length == 0) {
+                alert('1개 이상의 상품을 선택해주세요.');
+                return;
+            }
+
+            // 배열을 문장화 시켜줌.
+            // $checked 는 checkbox 의 check 되어 있는 것들을 싹다 가져와서 배열로 되어 있는데
+            // 밑에 작업 때문에 ids 는 문장화 되어진다.
+            // index 는 index 가 나오게 되고, el 는 element들이 나오게 된다.
+            const ids = $checked.map((index, el) => $(el).val()).get();
+            // input 에다가 배열을 못넣기 때문에 문장화 시켜서 넣어주는 것이다.
+            form.ids.value = ids;
+            form.submit();
+            OrderCartItemsForm__submitDone = true;
+        }
+    </script>
+</main>
+
+</html>

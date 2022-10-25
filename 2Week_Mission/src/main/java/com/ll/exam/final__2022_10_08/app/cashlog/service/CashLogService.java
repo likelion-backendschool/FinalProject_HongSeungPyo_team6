@@ -1,4 +1,4 @@
-package com.ll.exam.final__2022_10_08.app.cashlog;
+package com.ll.exam.final__2022_10_08.app.cashlog.service;
 
 import com.ll.exam.final__2022_10_08.app.cashlog.entity.CashLog;
 import com.ll.exam.final__2022_10_08.app.cashlog.repository.CashLogRepository;

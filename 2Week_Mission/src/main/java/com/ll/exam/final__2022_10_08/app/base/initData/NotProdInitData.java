@@ -79,7 +79,6 @@ public class NotProdInitData {
             CartItem cartItem2 = cartItemService.addItem(member2,product2);
             CartItem cartItem3 = cartItemService.addItem(member2,product3);
 
-            Order order1 = orderService.createFromCart(member2);
 
             // 1만원 충전
             memberService.addCash(member1, 10_000_000, "충전__무통장입금");
@@ -95,6 +94,7 @@ public class NotProdInitData {
             Order order2 = orderService.createFromCart(member1);
 
             orderService.addOrder(order2);
+
         };
     }
 }
