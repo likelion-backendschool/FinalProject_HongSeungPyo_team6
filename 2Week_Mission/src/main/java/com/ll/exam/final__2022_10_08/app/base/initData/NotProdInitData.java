@@ -95,6 +95,11 @@ public class NotProdInitData {
 
             orderService.addOrder(order2);
 
+            // 1만원 충전
+            memberService.addCash(member2, 10_000_000, "충전__무통장입금");
+
+            Order order3 = orderService.createFromCart(member2);
+
         };
     }
 }

@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +105,28 @@ public class OrderService {
 
     public Order getOrder(Member member) {
         return orderRepository.findByBuyerId(member.getId());
+    }
+
+    @Transactional
+    public void payByTossPayments(Order order, long payPriceRestCash) {
+        Member member = order.getBuyer();
+        long payPriceTossPayment = order.calculatePayPrice() - payPriceRestCash;
+        memberService.addCash(member,payPriceTossPayment,"충전__토스페이");
+        memberService.addCash(member,payPriceTossPayment * (-1),"결제__토스페이");
+        memberService.addCash(member,payPriceRestCash * (-1),"결제__예치금");
+        order.setPaymentDone();
+        orderRepository.save(order);
+    }
+
+    public Optional<Order> findForPrintById(long orderId) {
+        return orderRepository.findById(orderId);
+    }
+
+    @Transactional
+    public void payByRestCashOnly(Order order) {
+        Member member = order.getBuyer();
+        memberService.addCash(member,order.calculatePayPrice() * (-1),"결제__예치금");
+        order.setPaymentDone();
+        orderRepository.save(order);
     }
 }

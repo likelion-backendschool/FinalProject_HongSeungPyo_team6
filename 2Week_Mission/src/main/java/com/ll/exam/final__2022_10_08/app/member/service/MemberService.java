@@ -150,9 +150,10 @@ public class MemberService {
         // 회원의 남은 캐시
         long restCash = member.getRestCash();
         // 회원의 충전 캐시
-        long chargeCash = restCash + cache;
+        long updateCash = restCash + cache;
         // 충전 캐시 업데이트.
-        member.setRestCash(chargeCash);
+        member.setRestCash(updateCash);
         memberRepository.save(member);
     }
+
 }

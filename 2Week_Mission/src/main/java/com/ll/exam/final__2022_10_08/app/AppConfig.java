@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 
@@ -75,5 +76,10 @@ public class AppConfig {
     @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
         return new JPAQueryFactory(entityManager);
+    }
+
+    @Bean
+    public RestTemplate restTemplate(EntityManager entityManager) {
+        return new RestTemplate();
     }
 }
