@@ -18,7 +18,7 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     public CartItem addItem(Member member, Product product) {
         Optional<CartItem> oldCartItem = cartItemRepository.findByProductIdAndMemberId(product.getId(),member.getId());
-
+        // 이미 존재하는 장바구니 아이템이면 추가 하지 않기.
         if (oldCartItem.isPresent()){
             return oldCartItem.get();
         }

@@ -37,7 +37,7 @@ public class OrderService {
 
         return getOrder(buyer, cartItems);
     }
-
+    // 장바구니 선택 주문하기.
     @Transactional
     public Order createFromSelectCart(Member buyer, String cartItemIds){
 
@@ -50,7 +50,7 @@ public class OrderService {
         }
         return getOrder(buyer, cartItems);
     }
-
+    // 주문지 만들기.
     public Order getOrder(Member buyer, List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -108,6 +108,7 @@ public class OrderService {
         return orderRepository.findByBuyerId(member.getId());
     }
 
+    // 토스 + 예치금 결제
     @Transactional
     public void payByTossPayments(Order order, long payPriceRestCash) {
         Member member = order.getBuyer();
@@ -118,6 +119,7 @@ public class OrderService {
         order.setPaymentDone();
         orderRepository.save(order);
 
+        // 내가 구매한 도서 등록.
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems){
             Product product = orderItem.getProduct();
@@ -129,6 +131,7 @@ public class OrderService {
         return orderRepository.findById(orderId);
     }
 
+    // 예치금만 결제
     @Transactional
     public void payByRestCashOnly(Order order) {
         Member member = order.getBuyer();
@@ -136,6 +139,7 @@ public class OrderService {
         order.setPaymentDone();
         orderRepository.save(order);
 
+        // 내가 구매한 도서 등록.
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems){
             Product product = orderItem.getProduct();
