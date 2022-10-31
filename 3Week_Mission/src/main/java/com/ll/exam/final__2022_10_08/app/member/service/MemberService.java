@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -144,7 +145,8 @@ public class MemberService {
     }
 
     private void forceAuthentication(Member member) {
-        MemberContext memberContext = new MemberContext(member, member.genAuthorities());
+        String authLevel = attrService.get("authLevel", "");
+        MemberContext memberContext = new MemberContext(member, member.genAuthorities(authLevel));
 
         UsernamePasswordAuthenticationToken authentication =
                 UsernamePasswordAuthenticationToken.authenticated(
@@ -185,5 +187,9 @@ public class MemberService {
 
     public long getRestCash(Member member) {
         return memberRepository.findById(member.getId()).get().getRestCash();
+    }
+
+    public List<Member> getMembers() {
+        return memberRepository.findAll();
     }
 }
