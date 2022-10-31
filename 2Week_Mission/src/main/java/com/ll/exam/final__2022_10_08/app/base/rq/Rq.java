@@ -5,7 +5,9 @@ import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.security.dto.MemberContext;
 import com.ll.exam.final__2022_10_08.util.Ut;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -41,6 +43,14 @@ public class Rq {
         }
     }
 
+    public void modifyMemberContext(Member member){
+        memberContext.setModifyDate(member.getModifyDate());
+        memberContext.setEmail(member.getEmail());
+        memberContext.setNickname(member.getNickname());
+        memberContext.setRestCash(member.getRestCash());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
     public String redirectToBackWithMsg(String msg) {
         String url = req.getHeader("Referer");
 
@@ -110,4 +120,5 @@ public class Rq {
     public boolean isLogined() {
         return isLogout() == false;
     }
+
 }

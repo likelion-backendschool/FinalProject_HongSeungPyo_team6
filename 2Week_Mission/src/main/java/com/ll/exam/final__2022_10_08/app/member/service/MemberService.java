@@ -2,6 +2,7 @@ package com.ll.exam.final__2022_10_08.app.member.service;
 
 import com.ll.exam.final__2022_10_08.app.AppConfig;
 import com.ll.exam.final__2022_10_08.app.base.dto.RsData;
+import com.ll.exam.final__2022_10_08.app.cashlog.service.CashLogService;
 import com.ll.exam.final__2022_10_08.app.email.service.EmailService;
 import com.ll.exam.final__2022_10_08.app.emailVerification.service.EmailVerificationService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +29,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
     private final EmailService emailService;
+
+    private final CashLogService cashLogService;
 
     @Transactional
     public Member join(String username, String password, String email, String nickname) {
@@ -141,4 +143,17 @@ public class MemberService {
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
     }
+
+    @Transactional
+    public void addCash(Member member, long cache, String eventType) {
+        cashLogService.addCacheLog(member,cache, eventType);
+        // 회원의 남은 캐시
+        long restCash = member.getRestCash();
+        // 회원의 충전 캐시
+        long updateCash = restCash + cache;
+        // 충전 캐시 업데이트.
+        member.setRestCash(updateCash);
+        memberRepository.save(member);
+    }
+
 }

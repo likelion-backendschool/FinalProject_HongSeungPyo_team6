@@ -1,7 +1,11 @@
 package com.ll.exam.final__2022_10_08.app.base.initData;
 
+import com.ll.exam.final__2022_10_08.app.cartitem.entity.CartItem;
+import com.ll.exam.final__2022_10_08.app.cartitem.service.CartItemService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
+import com.ll.exam.final__2022_10_08.app.order.entity.Order;
+import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
 import com.ll.exam.final__2022_10_08.app.post.service.PostService;
 import com.ll.exam.final__2022_10_08.app.product.entity.Product;
 import com.ll.exam.final__2022_10_08.app.product.service.ProductService;
@@ -19,7 +23,9 @@ public class NotProdInitData {
     CommandLineRunner initData(
             MemberService memberService,
             PostService postService,
-            ProductService productService
+            ProductService productService,
+            CartItemService cartItemService,
+            OrderService orderService
     ) {
         return args -> {
             if (initDataDone) {
@@ -68,6 +74,31 @@ public class NotProdInitData {
             Product product2 = productService.create(member2, "상품명2", 40_000, "스프링부트", "#IT #REACT");
             Product product3 = productService.create(member1, "상품명3", 50_000, "REACT", "#IT #REACT");
             Product product4 = productService.create(member2, "상품명4", 60_000, "HTML", "#IT #HTML");
+
+            CartItem cartItem1 = cartItemService.addItem(member2,product1);
+            CartItem cartItem2 = cartItemService.addItem(member2,product2);
+            CartItem cartItem3 = cartItemService.addItem(member2,product3);
+
+
+            // 1만원 충전
+            memberService.addCash(member1, 10_000_000, "충전__무통장입금");
+            // 이만원 충전
+            memberService.addCash(member1, 20_000, "충전__무통장입금");
+            // 5천원 사용
+            memberService.addCash(member1, -5_000, "출금__일반");
+
+            CartItem cartItem4 = cartItemService.addItem(member1,product1);
+            CartItem cartItem5 = cartItemService.addItem(member1,product2);
+            CartItem cartItem6 = cartItemService.addItem(member1,product3);
+
+            Order order2 = orderService.createFromCart(member1);
+
+            orderService.addOrder(order2);
+
+            // 1만원 충전
+            memberService.addCash(member2, 10_000_000, "충전__무통장입금");
+
+            Order order3 = orderService.createFromCart(member2);
 
         };
     }
