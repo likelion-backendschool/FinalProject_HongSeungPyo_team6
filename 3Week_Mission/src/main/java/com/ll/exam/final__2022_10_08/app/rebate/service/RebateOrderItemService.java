@@ -1,7 +1,8 @@
 package com.ll.exam.final__2022_10_08.app.rebate.service;
 
+import com.ll.exam.final__2022_10_08.app.order.entity.OrderItem;
 import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
-import com.ll.exam.final__2022_10_08.app.orderitem.entity.OrderItem;
+
 import com.ll.exam.final__2022_10_08.app.rebate.entity.RebateOrderItem;
 import com.ll.exam.final__2022_10_08.app.rebate.repository.RebateOrderItemRepository;
 import com.ll.exam.final__2022_10_08.util.Ut;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,28 @@ public class RebateOrderItemService {
                 rebateOrderItemRepository.delete(oldRebateOrderItem);
             }
             rebateOrderItems.add(new RebateOrderItem(orderItem));
+        }
+        rebateOrderItemRepository.saveAll(rebateOrderItems);
+    }
+    public void rebateOrderItems(){
+        List<RebateOrderItem> rebateOrderItems = rebateOrderItemRepository.findAllByRebateAvailable(true);
+        for (RebateOrderItem rebateOrderItem : rebateOrderItems){
+            rebateOrderItem.setRebateAvailable(false);
+        }
+        rebateOrderItemRepository.saveAll(rebateOrderItems);
+        return;
+    }
+    public void rebateOrderItem(String ids) {
+        if (ids == null || ids.trim().length() == 0 ){
+            rebateOrderItems();
+            return;
+        }
+        String idBits[] = ids.split(",");
+        List<RebateOrderItem> rebateOrderItems = new ArrayList<>();
+        for (String id : idBits){
+            RebateOrderItem rebateOrderItem = rebateOrderItemRepository.findById(Long.parseLong(id)).get();
+            rebateOrderItem.setRebateAvailable(false);
+            rebateOrderItems.add(rebateOrderItem);
         }
         rebateOrderItemRepository.saveAll(rebateOrderItems);
     }

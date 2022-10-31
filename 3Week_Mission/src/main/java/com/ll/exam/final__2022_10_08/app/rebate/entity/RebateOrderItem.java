@@ -1,9 +1,11 @@
 package com.ll.exam.final__2022_10_08.app.rebate.entity;
 
 import com.ll.exam.final__2022_10_08.app.base.entity.BaseEntity;
-import com.ll.exam.final__2022_10_08.app.cashlog.entity.CashLog;
+
+import com.ll.exam.final__2022_10_08.app.cash.entity.CashLog;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
-import com.ll.exam.final__2022_10_08.app.orderitem.entity.OrderItem;
+
+import com.ll.exam.final__2022_10_08.app.order.entity.OrderItem;
 import com.ll.exam.final__2022_10_08.app.product.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

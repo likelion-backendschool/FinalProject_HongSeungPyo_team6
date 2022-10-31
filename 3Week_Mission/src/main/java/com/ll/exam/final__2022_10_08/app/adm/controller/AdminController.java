@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,5 +37,10 @@ public class AdminController {
         List<RebateOrderItem> rebateOrderItems = rebateOrderItemService.getReBateOrderItems();
         model.addAttribute("items", rebateOrderItems);
         return "adm/rebate/orderItemList";
+    }
+    @PostMapping("/rebate")
+    public String rebate(String ids){
+        rebateOrderItemService.rebateOrderItem(ids);
+        return rq.redirectWithMsg("/adm/rebate/rebateOrderItemList","정산이 완료 되었습니다.");
     }
 }

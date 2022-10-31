@@ -1,6 +1,7 @@
 package com.ll.exam.final__2022_10_08.app.member.service;
 
 import com.ll.exam.final__2022_10_08.app.AppConfig;
+import com.ll.exam.final__2022_10_08.app.attr.service.AttrService;
 import com.ll.exam.final__2022_10_08.app.base.dto.RsData;
 import com.ll.exam.final__2022_10_08.app.cash.entity.CashLog;
 import com.ll.exam.final__2022_10_08.app.cash.service.CashService;
@@ -37,6 +38,7 @@ public class MemberService {
     private final EmailVerificationService emailVerificationService;
     private final EmailService emailService;
     private final CashService cashService;
+    private final AttrService attrService;
 
     @Transactional
     public Member join(String username, String password, String email, String nickname) {

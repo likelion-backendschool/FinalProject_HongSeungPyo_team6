@@ -99,7 +99,7 @@
                 </span>
             </a>
 
-            <a href="/cart/list" class="inline-flex" sec:authorize="isAuthenticated()">
+            <a href="/cart/items" class="inline-flex" sec:authorize="isAuthenticated()">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span class="ml-[2px] hidden lg:block">
                     장바구니
@@ -122,6 +122,12 @@
                 <i class="fa-solid fa-file-invoice-dollar"></i>
                 <span class="ml-[2px] hidden lg:block">
                     정산 페이지
+                </span>
+            </a>
+            <a href="/adm/rebate/rebateOrderItemList" class="inline-flex" sec:authorize="hasAuthority('ADMIN')">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span class="ml-[2px] hidden lg:block">
+                    정산데이터 목록
                 </span>
             </a>
         </div>

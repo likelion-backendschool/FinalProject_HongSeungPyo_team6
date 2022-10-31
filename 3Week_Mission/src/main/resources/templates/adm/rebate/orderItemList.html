@@ -14,9 +14,14 @@
                 <h1>정산데이터 목록</h1>
 
                 <div class="overflow-x-auto">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="Rebate_allCheckbox checkbox">
+                        <span class="ml-2 pt-2">전체선택</span>
+                    </label>
                     <table class="table table-compact w-full">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>품목번호</th>
                             <th>결제날짜</th>
                             <th>상품명</th>
@@ -25,13 +30,14 @@
                             <th>환불가격</th>
                             <th>판매자</th>
                             <th>예상정산가</th>
-                            <th>정산내역번호</th>
                             <th>비고</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr th:each="item : ${items}">
+                            <td><input th:if=${item.rebateAvailable} type="checkbox" class="Rebate_ItemCheckbox checkbox"
+                                   th:value="${item.id}"></td>
                             <td th:text="${item.orderItem.id}"></td>
                             <td th:text="${item.payDate}"></td>
                             <td th:text="${item.productSubject}"></td>
@@ -43,21 +49,65 @@
                             <td>
                                 <span th:text="${item.rebateCashLog?.id}"></span>
                             </td>
-                            <td>
-                                <a th:if="${item.rebateAvailable}" href="javascript:;" onclick="$(this).next().submit();"
-                                   class="btn btn-xs">건별정산</a>
-                                <form method="POST" th:action="@{|/adm/rebate/rebateOne/${item.orderItem.id}|}"
-                                      target="_blank" hidden>
-
-                                </form>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
+                    <div class="grid grid-cols-2 mt-14 gap-2">
+                        <a href="javascript:;" onclick="RemoveRebateItemsForm__submit();"
+                           class="btn btn-warning btn-outline">건별정산</a>
+                        <form method="POST" name="removeRebateItemsForm" th:action="@{|/adm/rebate|}" hidden>
+                            <input type="hidden" name="ids">
+                        </form>
+
+                        <a href="javascript:;" onclick="$(this).next().submit();" class="btn btn-primary">전체
+                            정산하기</a>
+                        <form method="POST" th:action="@{|/adm/rebate|}" hidden></form>
+                    </div>
                 </div>
             </div>
         </div>
+        <script>
+            // 전체선택 체크박스
+            const $Rebate_allCheckbox = $('.Rebate_allCheckbox');
+            // 아이템 체크박스
+            const $Rebate_ItemCheckbox = $('.Rebate_ItemCheckbox');
 
+            // 전체선택 체크박스에 이벤트
+            $Rebate_allCheckbox.change(function () {
+                const allChecked = $(this).prop('checked');
+                $Rebate_ItemCheckbox.prop('checked', allChecked); // 아이템 체크박스들에게 체크상태 동기화
+            });
+
+            // 아이템 체크박스에 이벤트
+            $Rebate_ItemCheckbox.change(RebateItemCheckbox__changed);
+
+            function RebateItemCheckbox__changed() {
+                const allChecked = $Rebate_ItemCheckbox.length == $('.Rebate_ItemCheckbox:checked').length;
+
+                $Rebate_allCheckbox.prop('checked', allChecked);
+            }
+
+            // 폼 처리
+            let RemoveRebateItemsForm__submitDone = false;
+
+            function RemoveRebateItemsForm__submit() {
+                if (RemoveRebateItemsForm__submitDone) return;
+
+                const form = document.removeRebateItemsForm;
+
+                const $checked = $('.Rebate_ItemCheckbox:checked');
+
+                if ($checked.length == 0) {
+                    alert('삭제할 장바구니 품목을 선택해주세요.');
+                    return;
+                }
+
+                const ids = $checked.map((index, el) => $(el).val()).get();
+                form.ids.value = ids;
+                form.submit();
+                RemoveRebateItemsForm__submitDone = true;
+            }
+        </script>
     </section>
 
 </main>
