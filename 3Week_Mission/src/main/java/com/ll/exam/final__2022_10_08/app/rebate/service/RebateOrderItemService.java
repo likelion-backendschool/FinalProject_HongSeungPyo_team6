@@ -1,5 +1,7 @@
 package com.ll.exam.final__2022_10_08.app.rebate.service;
 
+import com.ll.exam.final__2022_10_08.app.cash.entity.CashLog;
+import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
 import com.ll.exam.final__2022_10_08.app.order.entity.OrderItem;
 import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
 
@@ -20,6 +22,8 @@ import java.util.Optional;
 public class RebateOrderItemService {
     private final OrderService orderService;
     private final RebateOrderItemRepository rebateOrderItemRepository;
+
+    private final MemberService memberService;
 
     public List<RebateOrderItem> getReBateOrderItems() {
         return rebateOrderItemRepository.findAll();
@@ -47,7 +51,13 @@ public class RebateOrderItemService {
     public void rebateOrderItems(){
         List<RebateOrderItem> rebateOrderItems = rebateOrderItemRepository.findAllByRebateAvailable(true);
         for (RebateOrderItem rebateOrderItem : rebateOrderItems){
+            CashLog cashLog = memberService.addCash(
+                    rebateOrderItem.getProduct().getAuthor(),
+                    rebateOrderItem.getCalculateRebatePrice(),
+                    "정산__%d__지급__예치금".formatted(rebateOrderItem.getOrderItem().getId())
+            ).getData().getCashLog();
             rebateOrderItem.setRebateAvailable(false);
+            rebateOrderItem.setRebateCashLog(cashLog);
         }
         rebateOrderItemRepository.saveAll(rebateOrderItems);
         return;
@@ -61,7 +71,10 @@ public class RebateOrderItemService {
         List<RebateOrderItem> rebateOrderItems = new ArrayList<>();
         for (String id : idBits){
             RebateOrderItem rebateOrderItem = rebateOrderItemRepository.findById(Long.parseLong(id)).get();
+            CashLog cashLog = memberService.addCash(rebateOrderItem.getProduct().getAuthor(), rebateOrderItem.getCalculateRebatePrice(), "정산__%d__지급__예치금".formatted(rebateOrderItem.getOrderItem().getId())
+            ).getData().getCashLog();
             rebateOrderItem.setRebateAvailable(false);
+            rebateOrderItem.setRebateCashLog(cashLog);
             rebateOrderItems.add(rebateOrderItem);
         }
         rebateOrderItemRepository.saveAll(rebateOrderItems);
