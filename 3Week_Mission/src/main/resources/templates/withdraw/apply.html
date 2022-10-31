@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>글 작성</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-write container mx-auto">
+
+        <div class="px-2 pt-4">
+            <h1 class="font-bold text-lg">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                출금 신청
+            </h1>
+
+
+            <form th:action method="POST" class="flex flex-col gap-3"
+                  onsubmit="PostWrite__submit(this); return false;">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">금액</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="금액" class="input input-bordered"
+                           maxlength="50">
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">통장</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="통장" class="input input-bordered"
+                           maxlength="50">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">계좌번호</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="계좌번호" class="input input-bordered"
+                           maxlength="50">
+                </div>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">
+                        <i class="fa-solid fa-angle-left"></i>
+                        <span class="ml-1">취소</span>
+                    </button>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span class="ml-1">신청</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+    <th:block th:replace="fragment/toastEditor :: toastEditor"></th:block>
+
+</main>
+</body>
+</html>
