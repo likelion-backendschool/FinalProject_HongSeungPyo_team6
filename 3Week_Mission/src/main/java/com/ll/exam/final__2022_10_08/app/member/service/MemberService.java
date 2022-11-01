@@ -147,8 +147,7 @@ public class MemberService {
     }
 
     private void forceAuthentication(Member member) {
-        String authLevel = attrService.get("authLevel", "");
-        MemberContext memberContext = new MemberContext(member, member.genAuthorities(authLevel));
+        MemberContext memberContext = new MemberContext(member, member.genAuthorities());
 
         UsernamePasswordAuthenticationToken authentication =
                 UsernamePasswordAuthenticationToken.authenticated(
@@ -178,6 +177,12 @@ public class MemberService {
 
     public Optional<Member> findById(long id) {
         return memberRepository.findById(id);
+    }
+
+    @Transactional
+    public void setAuthLevel(Member member, AuthLevel authLevel) {
+        member.setAuthLevel(authLevel);
+        memberRepository.save(member);
     }
 
     @Data

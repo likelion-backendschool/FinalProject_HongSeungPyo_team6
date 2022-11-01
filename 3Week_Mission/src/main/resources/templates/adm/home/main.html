@@ -29,7 +29,7 @@
                     <td th:text="${member.nickname}"></td>
                     <td th:text="${member.email}"></td>
                     <td>
-                        <a th:if="${@rq.getMember()}" href="javascript:;" onclick="$(this).next().submit();"
+                        <a th:if="${#strings.equals(member.AuthLevel,'NORMAL')}" href="javascript:;" onclick="$(this).next().submit();"
                            class="btn btn-xs">권한 주기</a>
                         <form method="POST" th:action="@{|/adm/authority/${member.id}|}"
                               hidden>

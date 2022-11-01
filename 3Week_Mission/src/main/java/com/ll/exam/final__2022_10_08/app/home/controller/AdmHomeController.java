@@ -3,6 +3,7 @@ package com.ll.exam.final__2022_10_08.app.home.controller;
 import com.ll.exam.final__2022_10_08.app.attr.service.AttrService;
 import com.ll.exam.final__2022_10_08.app.base.rq.Rq;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
+import com.ll.exam.final__2022_10_08.app.member.entity.emum.AuthLevel;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,6 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdmHomeController {
     private final MemberService memberService;
-    private final AttrService attrService;
     private final Rq rq;
     @GetMapping("")
     public String showIndex() {
@@ -37,10 +37,10 @@ public class AdmHomeController {
     }
     @PostMapping("/authority/{memberId}")
     public String adminAuthority(@PathVariable long memberId) {
-        String authLevel = attrService.get("member__%d__extra__authLevel".formatted(memberId), "");
-
-        if (authLevel.trim().length() == 0 || authLevel == null ){
-            attrService.set("member__%d__extra__authLevel".formatted(memberId), "7");
+        Member member = memberService.findById(memberId).get();
+        AuthLevel authLevel = member.getAuthLevel();
+        if (authLevel.equals(AuthLevel.NORMAL) ){
+            memberService.setAuthLevel(member,AuthLevel.ADMIN);
             return rq.redirectWithMsg("/adm/home/main", "유저 %d번에게 관리자 권한을 주었습니다.".formatted(memberId));
         }
 

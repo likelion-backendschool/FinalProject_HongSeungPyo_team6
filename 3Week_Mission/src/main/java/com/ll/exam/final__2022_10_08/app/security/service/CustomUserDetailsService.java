@@ -19,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsername(username).get();
-        String authLevel = attrService.get("member__%d__extra__authLevel".formatted(member.getId()), "");
-        return new MemberContext(member, member.genAuthorities(authLevel));
+        return new MemberContext(member, member.genAuthorities());
     }
 }

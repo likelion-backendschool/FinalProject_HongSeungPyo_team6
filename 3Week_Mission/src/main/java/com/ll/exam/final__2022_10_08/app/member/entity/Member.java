@@ -61,29 +61,11 @@ public class Member extends BaseEntity {
         if (StringUtils.hasText(nickname)) {
             authorities.add(new SimpleGrantedAuthority("AUTHOR"));
         }
-        // 유저의 아이디가 admin 이라면 어드민 권한을 가진다.|
-        if (username.equals("admin") ) {
+        // 유저의 아이디가 admin 이라면 어드민 권한을 가진다.
+        if (username.equals("admin") || authLevel.equals(AuthLevel.ADMIN)) {
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
         }
 
-        return authorities;
-    }
-    public boolean confirmMember(MemberContext memberContext) {
-        List<GrantedAuthority> authorities = genAuthorities();
-        for(GrantedAuthority authority : authorities){
-            if ( authority.getAuthority().equals("ADMIN") ){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public List<GrantedAuthority> genAuthorities(String authLevel) {
-        List<GrantedAuthority> authorities = genAuthorities();
-        // 권한 레벨이 7 이라면 어드민 권한을 가진다.|
-        if(authLevel.equals("7")){
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        }
         return authorities;
     }
 }
