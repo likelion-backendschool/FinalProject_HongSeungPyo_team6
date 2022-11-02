@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>출근 신청</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-write container mx-auto">
+
+        <div class="px-2 pt-4">
+            <h1 class="font-bold text-lg">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                출금 신청
+            </h1>
+
+
+            <form th:action method="POST" class="flex flex-col gap-3">
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">통장</span>
+                    </label>
+                    <input autofocus type="text" name="bankName" placeholder="통장" class="input input-bordered"
+                           maxlength="50">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">계좌번호</span>
+                    </label>
+                    <input autofocus type="text" name="bankAccountNo" placeholder="계좌번호" class="input input-bordered"
+                           maxlength="50">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">금액</span>
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="PaymentForm__useRestCash"
+                               name="price"
+                               th:placeholder="|￦ 0 ~ ￦ ${@ut.nf(actorRestCash)}|"
+                               class="input input-bordered min-w-[190px]" min="0" th:max="${actorRestCash}"
+
+                               onkeydown="PaymentForm__updateForm();"
+                               onkeyup="PaymentForm__updateForm();"
+                        >
+                        <label class="flex items-center gap-2">
+                            <input onchange="PaymentForm__useRestCashAllChanged();" id="PaymentForm__useRestCashAll"
+                                   type="checkbox" class="ml-2 checkbox">
+
+                            <span>전액</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-2 mt-2 gap-2">
+                        <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">
+                            <i class="fa-solid fa-angle-left"></i>
+                            <span class="ml-1">취소</span>
+                        </button>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                            <span class="ml-1">신청</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </section>
+    <script>
+        const $PaymentForm__useRestCash = $("#PaymentForm__useRestCash");
+        const $PaymentForm__useRestCashAll = $("#PaymentForm__useRestCashAll");
+        function PaymentForm__updateForm() {
+            let useRestCash = parseInt($PaymentForm__useRestCash.val());
+
+            if (isNaN(useRestCash)) {
+                useRestCash = 0;
+            }
+
+            const maxUseRestCash = parseInt($PaymentForm__useRestCash.attr('max'));
+
+            if (useRestCash > maxUseRestCash) {
+                useRestCash = maxUseRestCash;
+                $PaymentForm__useRestCash.val(maxUseRestCash);
+            }
+
+            if (useRestCash == maxUseRestCash) {
+                $PaymentForm__useRestCashAll.prop('checked', true);
+            } else {
+                $PaymentForm__useRestCashAll.prop('checked', false);
+            }
+
+            const pgPayPrice = orderPayPrice - useRestCash;
+
+            $PaymentForm__pgPayPriceDisplay.text(pgPayPrice.toLocaleString('ko-KR'));
+        }
+
+        function PaymentForm__useRestCashAllChanged() {
+            if ($PaymentForm__useRestCashAll.prop('checked')) {
+                const maxUseRestCash = parseInt($PaymentForm__useRestCash.attr('max'));
+                $PaymentForm__useRestCash.val(maxUseRestCash);
+            } else {
+                $PaymentForm__useRestCash.val(0);
+            }
+
+            PaymentForm__updateForm();
+        }
+
+        PaymentForm__updateForm();
+    </script>
+
+</main>
+</body>
+</html>

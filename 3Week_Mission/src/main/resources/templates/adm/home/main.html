@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title>관리자 페이지</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-profile flex-grow flex flex-col items-center justify-center">
+
+        <div class="overflow-x-auto">
+            <table class="table table-compact w-full">
+                <thead>
+                <tr>
+                    <th>유저 번호</th>
+                    <th>유저 아이디</th>
+                    <th>유저 닉네임</th>
+                    <th>유저 이메일</th>
+                    <th>어드민 권한 주기</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="member : ${members}">
+                    <td th:text="${member.id}"></td>
+                    <td th:text="${member.username}"></td>
+                    <td th:text="${member.nickname}"></td>
+                    <td th:text="${member.email}"></td>
+                    <td>
+                        <a th:if="${#strings.equals(member.AuthLevel,'NORMAL')}" href="javascript:;" onclick="$(this).next().submit();"
+                           class="btn btn-xs">권한 주기</a>
+                        <form method="POST" th:action="@{|/adm/authority/${member.id}|}"
+                              hidden>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>
